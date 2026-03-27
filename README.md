@@ -11,7 +11,7 @@ CLI-first MVP for AI-assisted website QA using crawling, manual test generation,
 - sync Excel edits back into JSON
 - generate Playwright tests for approved manual cases
 - execute automated tests
-- produce JSON and Markdown reports
+- produce JSON and HTML reports
 
 ## Main Workflow
 
@@ -42,7 +42,7 @@ tests/manual/manual-testcases.json
 tests/manual/manual-testcases.xlsx
 tests/automated/approved.spec.ts
 reports/results.json
-reports/summary.md
+reports/summary.html
 ```
 
 ## Persistence Model

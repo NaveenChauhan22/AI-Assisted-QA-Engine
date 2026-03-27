@@ -57,11 +57,17 @@ export interface ManualTestSuite {
 export interface PlaywrightExecutionFailure {
   test: string;
   reason: string;
+  priority?: TestPriority;
 }
 
 export interface ParsedResults {
   total: number;
   passed: number;
   failed: number;
+  highPriorityTotal: number;
+  highPriorityPassed: number;
+  highPriorityFailed: number;
+  releaseDecision: "GO" | "NO-GO";
+  releaseDecisionReason: string;
   failures: PlaywrightExecutionFailure[];
 }

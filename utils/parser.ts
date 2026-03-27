@@ -1,11 +1,17 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { type ParsedResults, type PlaywrightExecutionFailure } from "../types/contracts";
+import {
+  type ManualTestSuite,
+  type ParsedResults,
+  type PlaywrightExecutionFailure,
+  type TestPriority
+} from "../types/contracts";
 
 const projectRoot = path.resolve(__dirname, "..");
 const rawResultsPath = path.join(projectRoot, "reports", "playwright-raw.json");
 const parsedResultsPath = path.join(projectRoot, "reports", "results.json");
+const manualTestsPath = path.join(projectRoot, "tests", "manual", "manual-testcases.json");
 
 interface PlaywrightJsonSpec {
   title?: string;
@@ -32,6 +38,11 @@ interface PlaywrightJsonReport {
 async function readRawReport(): Promise<PlaywrightJsonReport> {
   const content = await readFile(rawResultsPath, "utf-8");
   return JSON.parse(content) as PlaywrightJsonReport;
+}
+
+async function readManualSuite(): Promise<ManualTestSuite> {
+  const content = await readFile(manualTestsPath, "utf-8");
+  return JSON.parse(content) as ManualTestSuite;
 }
 
 function flattenSpecs(suites: PlaywrightJsonSuite[] = []): PlaywrightJsonSpec[] {
@@ -70,41 +81,71 @@ function normalizeFailureMessage(message: string | undefined): string {
   return interestingLine ?? "Unknown failure";
 }
 
-function parseResults(report: PlaywrightJsonReport): ParsedResults {
+function parseResults(report: PlaywrightJsonReport, manualSuite: ManualTestSuite): ParsedResults {
   const specs = flattenSpecs(report.suites);
   const failures: PlaywrightExecutionFailure[] = [];
   let passed = 0;
   let failed = 0;
+  let highPriorityPassed = 0;
+  let highPriorityFailed = 0;
+  const manualTestsByTitle = new Map(
+    manualSuite.tests.map((test) => [`${test.id} ${test.title}`, test])
+  );
+  const approvedAutomationTests = manualSuite.tests.filter(
+    (test) => test.status === "approved" && test.automationCandidate
+  );
+  const highPriorityTotal = approvedAutomationTests.filter((test) => test.priority === "high").length;
 
   for (const spec of specs) {
     const result = spec.tests?.[0]?.results?.[0];
     if (!result) {
       continue;
     }
+    const testTitle = spec.title ?? "Unknown test";
+    const matchedManualTest = manualTestsByTitle.get(testTitle);
+    const priority = matchedManualTest?.priority;
 
     if (result.status === "passed") {
       passed += 1;
+      if (priority === "high") {
+        highPriorityPassed += 1;
+      }
       continue;
     }
 
     failed += 1;
+    if (priority === "high") {
+      highPriorityFailed += 1;
+    }
     failures.push({
-      test: spec.title ?? "Unknown test",
-      reason: normalizeFailureMessage(result.errors?.[0]?.message)
+      test: testTitle,
+      reason: normalizeFailureMessage(result.errors?.[0]?.message),
+      priority
     });
   }
+
+  const releaseDecision = highPriorityFailed > 0 ? "NO-GO" : "GO";
+  const releaseDecisionReason = highPriorityFailed > 0
+    ? `${highPriorityFailed} high-priority test${highPriorityFailed === 1 ? "" : "s"} failed.`
+    : "No high-priority failures were detected.";
 
   return {
     total: passed + failed,
     passed,
     failed,
+    highPriorityTotal,
+    highPriorityPassed,
+    highPriorityFailed,
+    releaseDecision,
+    releaseDecisionReason,
     failures
   };
 }
 
 async function main(): Promise<void> {
   const rawReport = await readRawReport();
-  const parsedResults = parseResults(rawReport);
+  const manualSuite = await readManualSuite();
+  const parsedResults = parseResults(rawReport, manualSuite);
 
   await writeFile(parsedResultsPath, `${JSON.stringify(parsedResults, null, 2)}\n`, "utf-8");
 
@@ -112,6 +153,7 @@ async function main(): Promise<void> {
     total: parsedResults.total,
     passed: parsedResults.passed,
     failed: parsedResults.failed,
+    releaseDecision: parsedResults.releaseDecision,
     output: path.relative(projectRoot, parsedResultsPath)
   }, null, 2));
 }

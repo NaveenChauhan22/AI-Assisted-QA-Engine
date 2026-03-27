@@ -31,7 +31,7 @@ Input and working files:
 - [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx): human-editable manual test workbook
 - [`tests/automated/approved.spec.ts`](../tests/automated/approved.spec.ts): generated Playwright tests for approved cases
 - [`reports/results.json`](../reports/results.json): parsed execution summary
-- [`reports/summary.md`](../reports/summary.md): presentable execution summary
+- [`reports/summary.html`](../reports/summary.html): presentation-friendly HTML report
 
 ## 3. Reset the Framework
 
@@ -364,7 +364,7 @@ npm run report:summary
 
 Output:
 
-- [`reports/summary.md`](../reports/summary.md)
+- [`reports/summary.html`](../reports/summary.html)
 
 This report is useful for quick sharing and review.
 
