@@ -1,0 +1,67 @@
+export type PageType = "homepage" | "category" | "product" | "unknown";
+
+export interface UrlInput {
+  mode: "urls";
+  urls: string[];
+}
+
+export interface SeedInput {
+  seedUrl: string;
+  maxUrls?: number;
+  excludePathKeywords?: string[];
+  browserMode?: "headless" | "headed" | "auto";
+}
+
+export interface TargetConfig {
+  baseUrl: string;
+}
+
+export interface DiscoveredPage {
+  url: string;
+  pageType: PageType;
+}
+
+export interface DiscoveredPagesReport {
+  seedUrl: string;
+  total: number;
+  pages: DiscoveredPage[];
+}
+
+export type TestCategory = "smoke" | "sanity" | "functional" | "regression";
+export type TestPriority = "high" | "medium" | "low";
+export type ManualTestStatus = "draft" | "reviewed" | "approved";
+export type ManualTestSource = "ai" | "template" | "manual";
+
+export interface ManualTestCase {
+  id: string;
+  pageUrl: string;
+  pageType: PageType;
+  title: string;
+  category: TestCategory;
+  priority: TestPriority;
+  steps: string[];
+  expectedResult: string;
+  automationCandidate: boolean;
+  status: ManualTestStatus;
+  source: ManualTestSource;
+}
+
+export interface ManualTestSuite {
+  seedUrl: string;
+  generatedAt: string;
+  generationMode: "ai" | "template";
+  total: number;
+  tests: ManualTestCase[];
+}
+
+export interface PlaywrightExecutionFailure {
+  test: string;
+  reason: string;
+}
+
+export interface ParsedResults {
+  total: number;
+  passed: number;
+  failed: number;
+  failures: PlaywrightExecutionFailure[];
+}

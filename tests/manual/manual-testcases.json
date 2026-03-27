@@ -1,0 +1,722 @@
+{
+  "seedUrl": "https://www.myntra.com/",
+  "generatedAt": "2026-03-26T06:09:34.332Z",
+  "generationMode": "template",
+  "total": 42,
+  "tests": [
+    {
+      "id": "TC-HOM-HOME-001",
+      "pageUrl": "https://www.myntra.com/",
+      "pageType": "homepage",
+      "title": "Homepage loads key navigation elements",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the homepage URL",
+        "Wait for the main page content to render",
+        "Observe the global header and top navigation"
+      ],
+      "expectedResult": "The homepage loads successfully and the primary navigation is visible.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-HOM-HOME-002",
+      "pageUrl": "https://www.myntra.com/",
+      "pageType": "homepage",
+      "title": "Homepage highlights major shopping entry points",
+      "category": "sanity",
+      "priority": "medium",
+      "steps": [
+        "Open the homepage URL",
+        "Scan the first visible content blocks",
+        "Inspect category or promotional entry points"
+      ],
+      "expectedResult": "At least one prominent category or promotional navigation path is visible and clickable.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-HOM-HOME-003",
+      "pageUrl": "https://www.myntra.com/",
+      "pageType": "homepage",
+      "title": "Homepage supports basic browsing transition",
+      "category": "functional",
+      "priority": "high",
+      "steps": [
+        "Open the homepage URL",
+        "Click a visible category or collection link",
+        "Observe the destination page"
+      ],
+      "expectedResult": "The selected link opens a browseable listing or collection page without errors.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-BLAZERS-001",
+      "pageUrl": "https://www.myntra.com/men-blazers",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-BLAZERS-002",
+      "pageUrl": "https://www.myntra.com/men-blazers",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-BLAZERS-003",
+      "pageUrl": "https://www.myntra.com/men-blazers",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-CASUAL-SHIRTS-001",
+      "pageUrl": "https://www.myntra.com/men-casual-shirts",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-CASUAL-SHIRTS-002",
+      "pageUrl": "https://www.myntra.com/men-casual-shirts",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-CASUAL-SHIRTS-003",
+      "pageUrl": "https://www.myntra.com/men-casual-shirts",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-ETHNIC-WEAR-001",
+      "pageUrl": "https://www.myntra.com/men-ethnic-wear",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "approved",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-ETHNIC-WEAR-002",
+      "pageUrl": "https://www.myntra.com/men-ethnic-wear",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-ETHNIC-WEAR-003",
+      "pageUrl": "https://www.myntra.com/men-ethnic-wear",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-FORMAL-SHIRTS-001",
+      "pageUrl": "https://www.myntra.com/men-formal-shirts",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-FORMAL-SHIRTS-002",
+      "pageUrl": "https://www.myntra.com/men-formal-shirts",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-FORMAL-SHIRTS-003",
+      "pageUrl": "https://www.myntra.com/men-formal-shirts",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-JACKETS-001",
+      "pageUrl": "https://www.myntra.com/men-jackets",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-JACKETS-002",
+      "pageUrl": "https://www.myntra.com/men-jackets",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-JACKETS-003",
+      "pageUrl": "https://www.myntra.com/men-jackets",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-KURTAS-001",
+      "pageUrl": "https://www.myntra.com/men-kurtas",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-KURTAS-002",
+      "pageUrl": "https://www.myntra.com/men-kurtas",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-KURTAS-003",
+      "pageUrl": "https://www.myntra.com/men-kurtas",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SUITS-001",
+      "pageUrl": "https://www.myntra.com/men-suits",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SUITS-002",
+      "pageUrl": "https://www.myntra.com/men-suits",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SUITS-003",
+      "pageUrl": "https://www.myntra.com/men-suits",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATERS-001",
+      "pageUrl": "https://www.myntra.com/men-sweaters",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATERS-002",
+      "pageUrl": "https://www.myntra.com/men-sweaters",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATERS-003",
+      "pageUrl": "https://www.myntra.com/men-sweaters",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATSHIRTS-001",
+      "pageUrl": "https://www.myntra.com/men-sweatshirts",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATSHIRTS-002",
+      "pageUrl": "https://www.myntra.com/men-sweatshirts",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-SWEATSHIRTS-003",
+      "pageUrl": "https://www.myntra.com/men-sweatshirts",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TOPWEAR-001",
+      "pageUrl": "https://www.myntra.com/men-topwear",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TOPWEAR-002",
+      "pageUrl": "https://www.myntra.com/men-topwear",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TOPWEAR-003",
+      "pageUrl": "https://www.myntra.com/men-topwear",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TSHIRTS-001",
+      "pageUrl": "https://www.myntra.com/men-tshirts",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TSHIRTS-002",
+      "pageUrl": "https://www.myntra.com/men-tshirts",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-MEN-TSHIRTS-003",
+      "pageUrl": "https://www.myntra.com/men-tshirts",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-RAIN-JACKET-001",
+      "pageUrl": "https://www.myntra.com/rain-jacket",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-RAIN-JACKET-002",
+      "pageUrl": "https://www.myntra.com/rain-jacket",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-RAIN-JACKET-003",
+      "pageUrl": "https://www.myntra.com/rain-jacket",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-SHOP-MEN-001",
+      "pageUrl": "https://www.myntra.com/shop/men",
+      "pageType": "category",
+      "title": "Category page loads product listing content",
+      "category": "smoke",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Wait for the listing content to render",
+        "Inspect the visible product grid or list area"
+      ],
+      "expectedResult": "The category page loads successfully and product listing content is visible.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-SHOP-MEN-002",
+      "pageUrl": "https://www.myntra.com/shop/men",
+      "pageType": "category",
+      "title": "Category page supports product discovery controls",
+      "category": "functional",
+      "priority": "medium",
+      "steps": [
+        "Open the category page URL",
+        "Inspect for sorting, filtering, or breadcrumb controls",
+        "Interact with one available browsing control if present"
+      ],
+      "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    },
+    {
+      "id": "TC-CAT-SHOP-MEN-003",
+      "pageUrl": "https://www.myntra.com/shop/men",
+      "pageType": "category",
+      "title": "Category page allows navigation to a product detail page",
+      "category": "regression",
+      "priority": "high",
+      "steps": [
+        "Open the category page URL",
+        "Click a visible product card or image",
+        "Observe the destination page"
+      ],
+      "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
+      "automationCandidate": true,
+      "status": "reviewed",
+      "source": "template"
+    }
+  ]
+}

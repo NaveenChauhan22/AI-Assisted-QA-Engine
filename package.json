@@ -1,0 +1,34 @@
+{
+  "name": "ai-assisted-qa-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MVP AI-assisted QA engine using TypeScript and Playwright.",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test",
+    "phase2:crawl": "ts-node crawler/crawler.ts",
+    "phase3:testcases": "ts-node ai/generateTestCases.ts",
+    "phase4:export": "ts-node utils/exportManualTests.ts",
+    "phase5:sync": "ts-node utils/syncManualTestsFromExcel.ts",
+    "phase6:codegen": "ts-node ai/generatePlaywrightCode.ts",
+    "phase7:run": "ts-node runner/runTests.ts",
+    "phase8:parse": "ts-node utils/parser.ts",
+    "report:summary": "ts-node utils/generateReport.ts",
+    "reset": "ts-node utils/resetWorkspace.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

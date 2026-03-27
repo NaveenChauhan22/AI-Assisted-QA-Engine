@@ -1,0 +1,119 @@
+You are a senior TypeScript + Playwright engineer building an AI-assisted QA system.
+
+I am providing a context file describing an MVP system.
+
+This implementation must be adapted specifically for testing the Myntra website.
+
+---
+
+## OBJECTIVE
+
+Build an MVP system that:
+
+1. Accepts:
+
+   * A list of Myntra URLs OR
+   * A seed URL (crawler)
+
+2. Generates:
+
+   * AI-based test cases per page
+
+3. Converts:
+
+   * Test cases → Playwright scripts
+
+4. Executes:
+
+   * Playwright tests
+
+5. Outputs:
+
+   * Structured JSON results
+
+---
+
+## NEW REQUIREMENTS
+
+You MUST implement:
+
+1. URL Input Mode
+
+   * Read from input/urls.json
+
+2. Crawler (NEW)
+
+   * File: crawler/crawler.ts
+   * Input: seed URL
+   * Extract links using Playwright
+   * Filter only myntra.com links
+   * Remove login/cart/checkout URLs
+   * Limit to 10–15 URLs
+
+3. Page Classification (BASIC)
+
+   * Classify pages into:
+
+     * homepage
+     * category
+     * product
+
+4. AI Test Generation (CONTEXT-AWARE)
+
+   * Use page type in prompt
+   * Generate relevant test cases
+
+---
+
+## RULES
+
+* DO NOT implement everything at once
+
+* Build in phases
+
+* Show full code after each phase
+
+* Wait for confirmation before proceeding
+
+* Keep system simple (MVP)
+
+* No UI
+
+* CLI only
+
+* Use JSON everywhere
+
+---
+
+## PHASES
+
+PHASE 1: Project Setup
+
+PHASE 2: URL Input + Crawler
+
+* Implement crawler.ts
+* Generate urls.json
+
+PHASE 3: Test Case Generator
+
+* Context-aware (page type)
+
+PHASE 4: Playwright Code Generator
+
+PHASE 5: Test Execution
+
+PHASE 6: Result Parser
+
+---
+
+## GOAL
+
+Run system on Myntra and:
+
+* Generate test cases
+* Execute them
+* Identify at least a few UI/navigation issues
+
+---
+
+Start with PHASE 1.

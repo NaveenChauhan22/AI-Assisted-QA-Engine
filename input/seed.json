@@ -1,0 +1,25 @@
+{
+  "seedUrl": "https://www.myntra.com/",
+  "browserMode": "auto",
+  "maxUrls": 15,
+  "excludePathKeywords": [
+    "login",
+    "signin",
+    "signup",
+    "cart",
+    "checkout",
+    "order",
+    "orders",
+    "account",
+    "profile",
+    "wishlist",
+    "help",
+    "contact",
+    "support",
+    "faq",
+    "privacy",
+    "terms",
+    "policy",
+    "giftcard"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "seedUrl": "https://www.myntra.com/",
+  "total": 14,
+  "pages": [
+    {
+      "url": "https://www.myntra.com/",
+      "pageType": "homepage"
+    },
+    {
+      "url": "https://www.myntra.com/men-blazers",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-casual-shirts",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-ethnic-wear",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-formal-shirts",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-jackets",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-kurtas",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-suits",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-sweaters",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-sweatshirts",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-topwear",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/men-tshirts",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/rain-jacket",
+      "pageType": "category"
+    },
+    {
+      "url": "https://www.myntra.com/shop/men",
+      "pageType": "category"
+    }
+  ]
+}
