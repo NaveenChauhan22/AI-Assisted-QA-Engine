@@ -12,6 +12,7 @@ import {
   type TestCategory,
   type TestPriority
 } from "../types/contracts";
+import { normalizeManualTest, resolveFeature } from "./manualTestUtils";
 
 const projectRoot = path.resolve(__dirname, "..");
 const manualTestsJsonPath = path.join(projectRoot, "tests", "manual", "manual-testcases.json");
@@ -124,10 +125,11 @@ function normalizeEnumValue<T extends string>(value: string, allowed: T[], fallb
 }
 
 function mergeRowIntoTest(record: RowRecord, existing: ManualTestCase): ManualTestCase {
-  return {
+  return normalizeManualTest({
     id: record.id?.trim() || existing.id,
     pageUrl: record.pageUrl?.trim() || existing.pageUrl,
     pageType: normalizeEnumValue(record.pageType ?? "", allowedPageTypes, existing.pageType),
+    feature: record.feature?.trim() || existing.feature,
     title: record.title?.trim() || existing.title,
     category: normalizeEnumValue(record.category ?? "", allowedCategories, existing.category),
     priority: normalizeEnumValue(record.priority ?? "", allowedPriorities, existing.priority),
@@ -136,7 +138,7 @@ function mergeRowIntoTest(record: RowRecord, existing: ManualTestCase): ManualTe
     automationCandidate: normalizeBoolean(record.automationCandidate ?? "", existing.automationCandidate),
     status: normalizeEnumValue(record.status ?? "", allowedStatuses, existing.status),
     source: normalizeEnumValue(record.source ?? "", allowedSources, existing.source)
-  };
+  });
 }
 
 function createManualTestFromRow(record: RowRecord): ManualTestCase {
@@ -150,19 +152,23 @@ function createManualTestFromRow(record: RowRecord): ManualTestCase {
     throw new Error(`New workbook row "${id || "<missing id>"}" is missing required values.`);
   }
 
-  return {
+  const pageType = normalizeEnumValue(record.pageType ?? "", allowedPageTypes, "unknown");
+  const category = normalizeEnumValue(record.category ?? "", allowedCategories, "functional");
+
+  return normalizeManualTest({
     id,
     pageUrl,
-    pageType: normalizeEnumValue(record.pageType ?? "", allowedPageTypes, "unknown"),
+    pageType,
+    feature: resolveFeature(record.feature?.trim(), pageType, title, category),
     title,
-    category: normalizeEnumValue(record.category ?? "", allowedCategories, "functional"),
+    category,
     priority: normalizeEnumValue(record.priority ?? "", allowedPriorities, "medium"),
     steps,
     expectedResult,
     automationCandidate: normalizeBoolean(record.automationCandidate ?? "", true),
     status: normalizeEnumValue(record.status ?? "", allowedStatuses, "draft"),
     source: normalizeEnumValue(record.source ?? "", allowedSources, "manual")
-  };
+  });
 }
 
 async function readWorkbookRecords(): Promise<{ metadata: RowRecord[]; tests: RowRecord[] }> {
@@ -192,6 +198,7 @@ async function writeSuite(suite: ManualTestSuite): Promise<void> {
 
 async function main(): Promise<void> {
   const existingSuite = await readExistingSuite();
+  existingSuite.tests = existingSuite.tests.map((test) => normalizeManualTest(test));
   const workbookData = await readWorkbookRecords();
   const existingTestsById = new Map(existingSuite.tests.map((test) => [test.id, test]));
 

@@ -31,6 +31,11 @@ function buildHtmlSummary(results: ParsedResults): string {
         <li>
           <strong>${escapeHtml(failure.test)}</strong>
           <div class="meta">Priority: ${escapeHtml(failure.priority ?? "unknown")}</div>
+          <div class="meta">Location: ${escapeHtml(
+            failure.file && failure.line
+              ? `${failure.file}:${failure.line}:${failure.column ?? 1}`
+              : failure.file ?? "unknown"
+          )}</div>
           <div class="reason">${escapeHtml(failure.reason)}</div>
         </li>
       `).join("")}</ul>`;

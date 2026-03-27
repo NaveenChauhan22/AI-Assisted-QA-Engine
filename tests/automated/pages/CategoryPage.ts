@@ -36,10 +36,28 @@ export class CategoryPage {
     const href = await productLink.getAttribute("href");
     expect(href, "Expected a product detail href on the category page").toBeTruthy();
 
-    await Promise.all([
-      this.page.waitForURL((url) => url.toString() !== this.url, { timeout: 15_000 }),
-      productLink.click()
+    const popupPromise = this.page.waitForEvent("popup", { timeout: 15_000 }).catch(() => null);
+    const sameTabPromise = this.page
+      .waitForURL((url) => url.toString() !== this.url, { timeout: 15_000 })
+      .then(() => this.page)
+      .catch(() => null);
+
+    await productLink.click();
+
+    const navigatedPage = await Promise.race([
+      popupPromise.then(async (popupPage) => {
+        if (!popupPage) {
+          return null;
+        }
+
+        await popupPage.waitForLoadState("domcontentloaded", { timeout: 15_000 }).catch(() => undefined);
+        return popupPage;
+      }),
+      sameTabPromise
     ]);
+
+    expect(navigatedPage, `Expected product click to open a PDP from ${this.url}`).not.toBeNull();
+    await expect(navigatedPage!).not.toHaveURL(this.url);
   }
 
   private async firstProductDetailLink(): Promise<Locator> {

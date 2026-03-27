@@ -36,6 +36,7 @@ export interface ManualTestCase {
   id: string;
   pageUrl: string;
   pageType: PageType;
+  feature: string;
   title: string;
   category: TestCategory;
   priority: TestPriority;
@@ -58,6 +59,9 @@ export interface PlaywrightExecutionFailure {
   test: string;
   reason: string;
   priority?: TestPriority;
+  file?: string;
+  line?: number;
+  column?: number;
 }
 
 export interface ParsedResults {

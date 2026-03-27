@@ -12,6 +12,7 @@ import {
   type TestCategory,
   type TestPriority
 } from "../types/contracts";
+import { normalizeManualTest, resolveFeature } from "../utils/manualTestUtils";
 
 const projectRoot = path.resolve(__dirname, "..");
 const discoveredPagesPath = path.join(projectRoot, "reports", "discovered-pages.json");
@@ -19,6 +20,7 @@ const manualTestsPath = path.join(projectRoot, "tests", "manual", "manual-testca
 const DEFAULT_OPENAI_MODEL = "gpt-4.1-mini";
 
 interface LlmGeneratedTestCase {
+  feature: string;
   title: string;
   category: TestCategory;
   priority: TestPriority;
@@ -47,7 +49,11 @@ async function readExistingManualSuite(): Promise<ManualTestSuite | null> {
       return null;
     }
 
-    return parsed;
+    return {
+      ...parsed,
+      total: parsed.tests.length,
+      tests: parsed.tests.map((test) => normalizeManualTest(test))
+    };
   } catch {
     return null;
   }
@@ -81,6 +87,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
     return [
       {
         title: "Homepage loads key navigation elements",
+        feature: "Homepage Navigation",
         category: "smoke",
         priority: "high",
         steps: [
@@ -93,6 +100,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Homepage highlights major shopping entry points",
+        feature: "Homepage Discovery",
         category: "sanity",
         priority: "medium",
         steps: [
@@ -105,6 +113,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Homepage supports basic browsing transition",
+        feature: "Homepage Discovery",
         category: "functional",
         priority: "high",
         steps: [
@@ -122,6 +131,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
     return [
       {
         title: "Category page loads product listing content",
+        feature: "Category Listing",
         category: "smoke",
         priority: "high",
         steps: [
@@ -134,6 +144,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Category page supports product discovery controls",
+        feature: "Category Discovery",
         category: "functional",
         priority: "medium",
         steps: [
@@ -146,6 +157,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Category page allows navigation to a product detail page",
+        feature: "Product Detail Navigation",
         category: "regression",
         priority: "high",
         steps: [
@@ -163,6 +175,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
     return [
       {
         title: "Product page shows essential product details",
+        feature: "Product Details",
         category: "smoke",
         priority: "high",
         steps: [
@@ -175,6 +188,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Product page supports selection before purchase action",
+        feature: "Purchase Readiness",
         category: "functional",
         priority: "high",
         steps: [
@@ -187,6 +201,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
       },
       {
         title: "Product page maintains stable media and detail interactions",
+        feature: "Product Media",
         category: "regression",
         priority: "medium",
         steps: [
@@ -203,6 +218,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
   return [
     {
       title: "Page loads without major UI failures",
+      feature: "General UI",
       category: "smoke",
       priority: "high",
       steps: [
@@ -222,7 +238,8 @@ function buildPrompt(page: DiscoveredPage): string {
     "Return ONLY valid JSON.",
     "Return an array with 2 to 4 test case objects.",
     "Each object must contain these keys exactly:",
-    'title, category, priority, steps, expectedResult, automationCandidate',
+    'feature, title, category, priority, steps, expectedResult, automationCandidate',
+    "Feature must be a short grouping label of 2 to 4 words.",
     'Allowed category values: "smoke", "sanity", "functional", "regression".',
     'Allowed priority values: "high", "medium", "low".',
     "Steps must be concise human-readable actions.",
@@ -239,6 +256,7 @@ function normalizeAiTestCase(candidate: LlmGeneratedTestCase): LlmGeneratedTestC
   const priorityValues: TestPriority[] = ["high", "medium", "low"];
 
   return {
+    feature: resolveFeature(candidate.feature, "unknown", String(candidate.title ?? "").trim()),
     title: String(candidate.title ?? "").trim(),
     category: categoryValues.includes(candidate.category) ? candidate.category : "functional",
     priority: priorityValues.includes(candidate.priority) ? candidate.priority : "medium",
@@ -318,10 +336,11 @@ async function generateTestsForPage(page: DiscoveredPage): Promise<{ mode: "ai" 
 }
 
 function materializeManualTests(page: DiscoveredPage, generatedTests: LlmGeneratedTestCase[], source: "ai" | "template"): ManualTestCase[] {
-  return generatedTests.map((test, index) => ({
+  return generatedTests.map((test, index) => normalizeManualTest({
     id: buildTestId(page, index),
     pageUrl: page.url,
     pageType: page.pageType,
+    feature: resolveFeature(test.feature, page.pageType, test.title, test.category),
     title: test.title,
     category: test.category,
     priority: test.priority,
@@ -360,7 +379,7 @@ async function main(): Promise<void> {
   }
 
   const mergedTests = [
-    ...(existingSuite?.tests ?? []),
+    ...(existingSuite?.tests ?? []).map((test) => normalizeManualTest(test)),
     ...newlyGeneratedTests
   ];
 

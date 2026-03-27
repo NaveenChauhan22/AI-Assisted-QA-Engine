@@ -9,6 +9,7 @@ const resultsPath = path.join(projectRoot, "reports", "results.json");
 const manualTestsJsonPath = path.join(projectRoot, "tests", "manual", "manual-testcases.json");
 const manualTestsExcelPath = path.join(projectRoot, "tests", "manual", "manual-testcases.xlsx");
 const automatedTestsDir = path.join(projectRoot, "tests", "automated");
+const automatedSpecsDir = path.join(automatedTestsDir, "specs");
 
 const defaultSeed = {
   seedUrl: "https://example.com/",
@@ -37,15 +38,19 @@ const defaultSeed = {
 };
 
 async function removeGeneratedSpecs(): Promise<void> {
-  const entries = await readdir(automatedTestsDir, { withFileTypes: true }).catch(() => []);
+  const rootEntries = await readdir(automatedTestsDir, { withFileTypes: true }).catch(() => []);
+  const specEntries = await readdir(automatedSpecsDir, { withFileTypes: true }).catch(() => []);
 
-  for (const entry of entries) {
-    if (entry.name === ".gitkeep") {
-      continue;
-    }
-
+  for (const entry of rootEntries.filter((entry) => entry.isFile() && entry.name.endsWith(".spec.ts"))) {
     await rm(path.join(automatedTestsDir, entry.name), {
-      recursive: true,
+      recursive: false,
+      force: true
+    });
+  }
+
+  for (const entry of specEntries.filter((entry) => entry.isFile() && entry.name.endsWith(".spec.ts"))) {
+    await rm(path.join(automatedSpecsDir, entry.name), {
+      recursive: false,
       force: true
     });
   }
@@ -72,7 +77,8 @@ async function main(): Promise<void> {
       seed: path.relative(projectRoot, seedPath),
       urls: path.relative(projectRoot, urlsPath),
       manualTests: path.relative(projectRoot, manualTestsJsonPath),
-      automatedTestsDir: path.relative(projectRoot, automatedTestsDir)
+      automatedTestsDir: path.relative(projectRoot, automatedTestsDir),
+      automatedSpecsDir: path.relative(projectRoot, automatedSpecsDir)
     }
   }, null, 2));
 }

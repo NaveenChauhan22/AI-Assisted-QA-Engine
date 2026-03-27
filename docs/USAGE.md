@@ -29,9 +29,16 @@ Input and working files:
 - [`reports/discovered-pages.json`](../reports/discovered-pages.json): latest crawl snapshot
 - [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json): machine-readable manual test repository
 - [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx): human-editable manual test workbook
-- [`tests/automated/approved.spec.ts`](../tests/automated/approved.spec.ts): generated Playwright tests for approved cases
+- `tests/automated/specs/*.spec.ts`: generated Playwright tests grouped by feature
 - [`reports/results.json`](../reports/results.json): parsed execution summary
 - [`reports/summary.html`](../reports/summary.html): presentation-friendly HTML report
+
+Important debugging rule:
+
+- use `tests/automated/` as the source of truth for generated automation
+- generated spec files live under `tests/automated/specs/`
+- ignore `dist/` when debugging or maintaining Playwright tests because it is compiled build output
+- `npm run build` intentionally excludes Playwright test sources, so `dist/tests/` should not be part of the workflow
 
 ## 3. Reset the Framework
 
@@ -104,7 +111,7 @@ Detailed parameter behavior:
 Command:
 
 ```bash
-npm run phase2:crawl
+npm run crawl
 ```
 
 What it does:
@@ -164,7 +171,7 @@ Recommended usage:
 Command:
 
 ```bash
-npm run phase3:testcases
+npm run testcases
 ```
 
 What it does:
@@ -184,7 +191,7 @@ Important behavior:
 Command:
 
 ```bash
-npm run phase4:export
+npm run export
 ```
 
 Output:
@@ -199,6 +206,7 @@ Open [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xls
 
 Users can:
 
+- update `feature` values to regroup automation output
 - update test titles
 - change categories and priorities
 - change `status`
@@ -238,6 +246,12 @@ Field meanings in the workbook:
 - `title`
   Human-readable test case title.
 
+- `feature`
+  Human-editable grouping label used to organize generated automation.
+  The framework fills this initially, and reviewers can refine it in Excel.
+  Examples:
+  `Homepage Navigation`, `Category Discovery`, `Product Detail Navigation`
+
 - `category`
   The testing intent of the case.
   Current values:
@@ -276,7 +290,7 @@ Field meanings in the workbook:
 Command:
 
 ```bash
-npm run phase5:sync
+npm run sync
 ```
 
 What it does:
@@ -302,14 +316,22 @@ Sync behavior:
 Command:
 
 ```bash
-npm run phase6:codegen
+npm run codegen
 ```
 
 What it does:
 
 - reads [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json)
 - selects tests where `status = approved`
-- writes generated Playwright automation to [`tests/automated/approved.spec.ts`](../tests/automated/approved.spec.ts)
+- groups approved tests by `feature`
+- writes generated Playwright specs under `tests/automated/specs/`
+
+Generated spec behavior:
+
+- each spec groups tests that share the same feature label
+- tests inside a feature spec can still cover multiple page URLs
+- each generated test section includes a clear comment header with feature, page URL, and manual test ID
+- this keeps specs readable while giving reviewers control over how automation is grouped
 
 Current automation architecture:
 
@@ -321,13 +343,15 @@ Current automation architecture:
 Command:
 
 ```bash
-npm run phase7:run
+npm run execute
 ```
 
 What it does:
 
-- runs the approved Playwright suite
+- runs the generated Playwright suite from `tests/automated/`
 - writes raw Playwright JSON to [`reports/playwright-raw.json`](../reports/playwright-raw.json)
+- automatically refreshes [`reports/results.json`](../reports/results.json)
+- automatically refreshes [`reports/summary.html`](../reports/summary.html)
 - writes traces/screenshots under `test-results/` when failures occur
 
 Run mode:
@@ -335,12 +359,12 @@ Run mode:
 - default runner behavior uses headed execution
 - this is intentional for sites where headless navigation is less reliable
 
-## 13. Parse Results
+## 13. Utility: Parse Results Manually
 
 Command:
 
 ```bash
-npm run phase8:parse
+npm run parse
 ```
 
 Output:
@@ -354,19 +378,21 @@ This file contains:
 - failed
 - concise failure reasons
 
-## 14. Generate a Presentable Report
+Use this only when you want to regenerate the parsed JSON without rerunning Playwright.
+
+## 14. Utility: Regenerate the HTML Report
 
 Command:
 
 ```bash
-npm run report:summary
+npm run report
 ```
 
 Output:
 
 - [`reports/summary.html`](../reports/summary.html)
 
-This report is useful for quick sharing and review.
+Use this only when you want to rebuild the presentation report from an existing [`reports/results.json`](../reports/results.json) file.
 
 ## 15. Full End-to-End Flow
 
@@ -374,9 +400,9 @@ Typical sequence:
 
 ```bash
 npm run reset
-npm run phase2:crawl
-npm run phase3:testcases
-npm run phase4:export
+npm run crawl
+npm run testcases
+npm run export
 ```
 
 Then:
@@ -388,12 +414,15 @@ Then:
 Then continue:
 
 ```bash
-npm run phase5:sync
-npm run phase6:codegen
-npm run phase7:run
-npm run phase8:parse
-npm run report:summary
+npm run sync
+npm run codegen
+npm run execute
 ```
+
+At this point:
+
+- [`reports/results.json`](../reports/results.json) has already been refreshed
+- [`reports/summary.html`](../reports/summary.html) has already been refreshed
 
 ## 16. Known MVP Limitations
 
@@ -406,13 +435,13 @@ npm run report:summary
 ## 17. Command Reference
 
 ```bash
-npm run phase2:crawl
-npm run phase3:testcases
-npm run phase4:export
-npm run phase5:sync
-npm run phase6:codegen
-npm run phase7:run
-npm run phase8:parse
-npm run report:summary
+npm run crawl
+npm run testcases
+npm run export
+npm run sync
+npm run codegen
+npm run execute
+npm run parse
+npm run report
 npm run reset
 ```

@@ -4,6 +4,7 @@ import path from "node:path";
 import ExcelJS from "exceljs";
 
 import { type ManualTestCase, type ManualTestSuite } from "../types/contracts";
+import { normalizeManualTest } from "./manualTestUtils";
 
 const projectRoot = path.resolve(__dirname, "..");
 const manualTestsJsonPath = path.join(projectRoot, "tests", "manual", "manual-testcases.json");
@@ -17,7 +18,11 @@ async function readManualTestSuite(): Promise<ManualTestSuite> {
     throw new Error(`Invalid manual test suite JSON in ${manualTestsJsonPath}`);
   }
 
-  return parsed;
+  return {
+    ...parsed,
+    total: parsed.tests.length,
+    tests: parsed.tests.map((test) => normalizeManualTest(test))
+  };
 }
 
 function formatSteps(steps: string[]): string {
@@ -29,6 +34,7 @@ function buildTestRows(tests: ManualTestCase[]): Array<Record<string, string | b
     id: test.id,
     pageUrl: test.pageUrl,
     pageType: test.pageType,
+    feature: test.feature,
     title: test.title,
     category: test.category,
     priority: test.priority,
@@ -86,7 +92,7 @@ async function main(): Promise<void> {
   populateWorksheet(
     testsWorksheet,
     buildTestRows(suite.tests),
-    [24, 42, 14, 44, 14, 12, 72, 60, 20, 14, 14]
+    [24, 42, 14, 24, 44, 14, 12, 72, 60, 20, 14, 14]
   );
   populateWorksheet(
     metadataWorksheet,

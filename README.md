@@ -12,20 +12,20 @@ CLI-first MVP for AI-assisted website QA using crawling, manual test generation,
 - generate Playwright tests for approved manual cases
 - execute automated tests
 - produce JSON and HTML reports
+- keep automation maintenance focused on `tests/automated`, not `dist/`
+- use a human-editable `feature` field to group generated specs
 
 ## Main Workflow
 
 ```bash
 npm install
 npx playwright install
-npm run phase2:crawl
-npm run phase3:testcases
-npm run phase4:export
-npm run phase5:sync
-npm run phase6:codegen
-npm run phase7:run
-npm run phase8:parse
-npm run report:summary
+npm run crawl
+npm run testcases
+npm run export
+npm run sync
+npm run codegen
+npm run execute
 ```
 
 ## Documentation
@@ -40,7 +40,7 @@ input/urls.json
 reports/discovered-pages.json
 tests/manual/manual-testcases.json
 tests/manual/manual-testcases.xlsx
-tests/automated/approved.spec.ts
+tests/automated/specs/*.spec.ts
 reports/results.json
 reports/summary.html
 ```
@@ -51,3 +51,11 @@ reports/summary.html
 - repeated test generation appends only genuinely new manual test cases
 - Excel sync updates the JSON suite based on workbook contents
 - `npm run reset` clears the working state for a fresh start
+
+## Debugging Note
+
+- edit and debug generated automation under `tests/automated/`
+- generated specs live under `tests/automated/specs/`
+- ignore `dist/` during automation maintenance because it is build output only
+- `npm run build` intentionally does not emit Playwright test sources into `dist/`
+- `npm run execute` now executes tests and refreshes both `reports/results.json` and `reports/summary.html`

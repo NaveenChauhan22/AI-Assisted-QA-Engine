@@ -19,7 +19,8 @@
       "expectedResult": "The homepage loads successfully and the primary navigation is visible.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Homepage Navigation"
     },
     {
       "id": "TC-HOM-HOME-002",
@@ -36,7 +37,8 @@
       "expectedResult": "At least one prominent category or promotional navigation path is visible and clickable.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Homepage Discovery"
     },
     {
       "id": "TC-HOM-HOME-003",
@@ -53,7 +55,8 @@
       "expectedResult": "The selected link opens a browseable listing or collection page without errors.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Homepage Discovery"
     },
     {
       "id": "TC-CAT-MEN-BLAZERS-001",
@@ -70,7 +73,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-BLAZERS-002",
@@ -87,7 +91,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-BLAZERS-003",
@@ -104,7 +109,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-CASUAL-SHIRTS-001",
@@ -121,7 +127,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-CASUAL-SHIRTS-002",
@@ -138,7 +145,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-CASUAL-SHIRTS-003",
@@ -155,7 +163,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-ETHNIC-WEAR-001",
@@ -172,7 +181,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "approved",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-ETHNIC-WEAR-002",
@@ -189,7 +199,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-ETHNIC-WEAR-003",
@@ -206,7 +217,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-FORMAL-SHIRTS-001",
@@ -223,7 +235,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-FORMAL-SHIRTS-002",
@@ -240,7 +253,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-FORMAL-SHIRTS-003",
@@ -257,7 +271,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-JACKETS-001",
@@ -274,7 +289,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-JACKETS-002",
@@ -291,7 +307,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-JACKETS-003",
@@ -308,7 +325,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-KURTAS-001",
@@ -325,7 +343,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-KURTAS-002",
@@ -342,7 +361,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-KURTAS-003",
@@ -359,7 +379,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-SUITS-001",
@@ -376,7 +397,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-SUITS-002",
@@ -393,7 +415,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-SUITS-003",
@@ -410,7 +433,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-SWEATERS-001",
@@ -427,7 +451,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-SWEATERS-002",
@@ -444,7 +469,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-SWEATERS-003",
@@ -461,7 +487,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-SWEATSHIRTS-001",
@@ -478,7 +505,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-SWEATSHIRTS-002",
@@ -495,7 +523,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-SWEATSHIRTS-003",
@@ -512,7 +541,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-TOPWEAR-001",
@@ -529,7 +559,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-TOPWEAR-002",
@@ -546,7 +577,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-TOPWEAR-003",
@@ -563,7 +595,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-MEN-TSHIRTS-001",
@@ -580,7 +613,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-MEN-TSHIRTS-002",
@@ -597,7 +631,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-MEN-TSHIRTS-003",
@@ -614,7 +649,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-RAIN-JACKET-001",
@@ -631,7 +667,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-RAIN-JACKET-002",
@@ -648,7 +685,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-RAIN-JACKET-003",
@@ -665,7 +703,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     },
     {
       "id": "TC-CAT-SHOP-MEN-001",
@@ -682,7 +721,8 @@
       "expectedResult": "The category page loads successfully and product listing content is visible.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Listing"
     },
     {
       "id": "TC-CAT-SHOP-MEN-002",
@@ -699,7 +739,8 @@
       "expectedResult": "Browsing controls are visible and at least one control responds without breaking the page.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Category Discovery"
     },
     {
       "id": "TC-CAT-SHOP-MEN-003",
@@ -716,7 +757,8 @@
       "expectedResult": "Clicking a product listing opens a product detail page or an equivalent product experience.",
       "automationCandidate": true,
       "status": "reviewed",
-      "source": "template"
+      "source": "template",
+      "feature": "Product Detail Navigation"
     }
   ]
 }

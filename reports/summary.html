@@ -97,29 +97,24 @@
     <section class="hero">
       <div class="decision">Release Decision: NO-GO</div>
       <h1>Execution Summary</h1>
-      <p>2 high-priority tests failed.</p>
+      <p>1 high-priority test failed.</p>
       <div class="stats">
         <div class="stat"><div class="label">Total Tests</div><div class="value">10</div></div>
-        <div class="stat"><div class="label">Passed</div><div class="value">8</div></div>
-        <div class="stat"><div class="label">Failed</div><div class="value">2</div></div>
-        <div class="stat"><div class="label">Pass Rate</div><div class="value">80%</div></div>
+        <div class="stat"><div class="label">Passed</div><div class="value">9</div></div>
+        <div class="stat"><div class="label">Failed</div><div class="value">1</div></div>
+        <div class="stat"><div class="label">Pass Rate</div><div class="value">90%</div></div>
         <div class="stat"><div class="label">High Priority Total</div><div class="value">7</div></div>
-        <div class="stat"><div class="label">High Priority Failed</div><div class="value">2</div></div>
+        <div class="stat"><div class="label">High Priority Failed</div><div class="value">1</div></div>
       </div>
     </section>
     <section class="section">
       <h2>Failures</h2>
       <ul class="failures">
         <li>
-          <strong>TC-CAT-MEN-BLAZERS-003 Category page allows navigation to a product detail page</strong>
+          <strong>TC-HOM-HOME-001 Homepage loads key navigation elements</strong>
           <div class="meta">Priority: high</div>
-          <div class="reason">TimeoutError: page.waitForURL: Timeout 15000ms exceeded.</div>
-        </li>
-      
-        <li>
-          <strong>TC-CAT-MEN-CASUAL-SHIRTS-003 Category page allows navigation to a product detail page</strong>
-          <div class="meta">Priority: high</div>
-          <div class="reason">TimeoutError: page.waitForURL: Timeout 15000ms exceeded.</div>
+          <div class="meta">Location: tests/automated/specs/homepage-navigation.spec.ts:21:72</div>
+          <div class="reason">Error: expect(locator).toHaveText(expected) failed</div>
         </li>
       </ul>
     </section>

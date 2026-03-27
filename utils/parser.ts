@@ -15,11 +15,31 @@ const manualTestsPath = path.join(projectRoot, "tests", "manual", "manual-testca
 
 interface PlaywrightJsonSpec {
   title?: string;
+  file?: string;
+  line?: number;
+  column?: number;
   tests?: Array<{
     results?: Array<{
       status?: string;
+      error?: {
+        location?: {
+          file?: string;
+          line?: number;
+          column?: number;
+        };
+      };
+      errorLocation?: {
+        file?: string;
+        line?: number;
+        column?: number;
+      };
       errors?: Array<{
         message?: string;
+        location?: {
+          file?: string;
+          line?: number;
+          column?: number;
+        };
       }>;
     }>;
   }>;
@@ -81,6 +101,14 @@ function normalizeFailureMessage(message: string | undefined): string {
   return interestingLine ?? "Unknown failure";
 }
 
+function normalizeFailureFile(file: string | undefined): string | undefined {
+  if (!file) {
+    return undefined;
+  }
+
+  return file.startsWith(projectRoot) ? path.relative(projectRoot, file) : file;
+}
+
 function parseResults(report: PlaywrightJsonReport, manualSuite: ManualTestSuite): ParsedResults {
   const specs = flattenSpecs(report.suites);
   const failures: PlaywrightExecutionFailure[] = [];
@@ -117,10 +145,16 @@ function parseResults(report: PlaywrightJsonReport, manualSuite: ManualTestSuite
     if (priority === "high") {
       highPriorityFailed += 1;
     }
+    const firstError = result.errors?.[0];
+    const errorLocation = firstError?.location ?? result.error?.location ?? result.errorLocation;
+
     failures.push({
       test: testTitle,
-      reason: normalizeFailureMessage(result.errors?.[0]?.message),
-      priority
+      reason: normalizeFailureMessage(firstError?.message),
+      priority,
+      file: normalizeFailureFile(errorLocation?.file ?? spec.file),
+      line: errorLocation?.line ?? spec.line,
+      column: errorLocation?.column ?? spec.column
     });
   }
 
