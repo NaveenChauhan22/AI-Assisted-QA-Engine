@@ -24,14 +24,14 @@ Optional:
 
 Input and working files:
 
-- [`input/seed.json`](/Users/administrator/Documents/AI-Assisted QA Engine/input/seed.json): crawler input and crawl configuration
-- [`input/urls.json`](/Users/administrator/Documents/AI-Assisted QA Engine/input/urls.json): persistent merged URL scope
-- [`reports/discovered-pages.json`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/discovered-pages.json): latest crawl snapshot
-- [`tests/manual/manual-testcases.json`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.json): machine-readable manual test repository
-- [`tests/manual/manual-testcases.xlsx`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.xlsx): human-editable manual test workbook
-- [`tests/automated/approved.spec.ts`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/automated/approved.spec.ts): generated Playwright tests for approved cases
-- [`reports/results.json`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/results.json): parsed execution summary
-- [`reports/summary.md`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/summary.md): presentable execution summary
+- [`input/seed.json`](../input/seed.json): crawler input and crawl configuration
+- [`input/urls.json`](../input/urls.json): persistent merged URL scope
+- [`reports/discovered-pages.json`](../reports/discovered-pages.json): latest crawl snapshot
+- [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json): machine-readable manual test repository
+- [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx): human-editable manual test workbook
+- [`tests/automated/approved.spec.ts`](../tests/automated/approved.spec.ts): generated Playwright tests for approved cases
+- [`reports/results.json`](../reports/results.json): parsed execution summary
+- [`reports/summary.md`](../reports/summary.md): presentable execution summary
 
 ## 3. Reset the Framework
 
@@ -55,7 +55,7 @@ This resets:
 
 ## 4. Set the Seed URL
 
-Edit [`input/seed.json`](/Users/administrator/Documents/AI-Assisted QA Engine/input/seed.json).
+Edit [`input/seed.json`](../input/seed.json).
 
 Example:
 
@@ -113,8 +113,8 @@ What it does:
 - extracts same-site links
 - applies exclusion filters
 - classifies pages into basic types
-- writes latest crawl snapshot to [`reports/discovered-pages.json`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/discovered-pages.json)
-- merges new URLs into [`input/urls.json`](/Users/administrator/Documents/AI-Assisted QA Engine/input/urls.json)
+- writes latest crawl snapshot to [`reports/discovered-pages.json`](../reports/discovered-pages.json)
+- merges new URLs into [`input/urls.json`](../input/urls.json)
 
 Important behavior:
 
@@ -123,7 +123,7 @@ Important behavior:
 
 ## 6. Update `urls.json` Manually
 
-Users can edit [`input/urls.json`](/Users/administrator/Documents/AI-Assisted QA Engine/input/urls.json) directly.
+Users can edit [`input/urls.json`](../input/urls.json) directly.
 
 This is useful when:
 
@@ -171,7 +171,7 @@ What it does:
 
 - reads the latest discovered pages
 - generates multiple manual test cases per page
-- saves them into [`tests/manual/manual-testcases.json`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.json)
+- saves them into [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json)
 
 Important behavior:
 
@@ -189,13 +189,13 @@ npm run phase4:export
 
 Output:
 
-- [`tests/manual/manual-testcases.xlsx`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.xlsx)
+- [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx)
 
 This workbook is the human review layer.
 
 ## 9. Review and Edit Manual Test Cases in Excel
 
-Open [`tests/manual/manual-testcases.xlsx`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.xlsx) in Excel or another spreadsheet tool.
+Open [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx) in Excel or another spreadsheet tool.
 
 Users can:
 
@@ -282,7 +282,7 @@ npm run phase5:sync
 What it does:
 
 - reads the `ManualTests` sheet from Excel
-- updates [`tests/manual/manual-testcases.json`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.json)
+- updates [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json)
 - preserves edited values
 - removes JSON rows that were removed from the workbook
 - accepts new workbook rows if they contain a valid `id`
@@ -307,14 +307,14 @@ npm run phase6:codegen
 
 What it does:
 
-- reads [`tests/manual/manual-testcases.json`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/manual/manual-testcases.json)
+- reads [`tests/manual/manual-testcases.json`](../tests/manual/manual-testcases.json)
 - selects tests where `status = approved`
-- writes generated Playwright automation to [`tests/automated/approved.spec.ts`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/automated/approved.spec.ts)
+- writes generated Playwright automation to [`tests/automated/approved.spec.ts`](../tests/automated/approved.spec.ts)
 
 Current automation architecture:
 
-- lightweight action layer in [`tests/automated/actions/navigationActions.ts`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/automated/actions/navigationActions.ts)
-- lightweight category page layer in [`tests/automated/pages/CategoryPage.ts`](/Users/administrator/Documents/AI-Assisted QA Engine/tests/automated/pages/CategoryPage.ts)
+- lightweight action layer in [`tests/automated/actions/navigationActions.ts`](../tests/automated/actions/navigationActions.ts)
+- lightweight category page layer in [`tests/automated/pages/CategoryPage.ts`](../tests/automated/pages/CategoryPage.ts)
 
 ## 12. Execute Automated Tests
 
@@ -327,7 +327,7 @@ npm run phase7:run
 What it does:
 
 - runs the approved Playwright suite
-- writes raw Playwright JSON to [`reports/playwright-raw.json`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/playwright-raw.json)
+- writes raw Playwright JSON to [`reports/playwright-raw.json`](../reports/playwright-raw.json)
 - writes traces/screenshots under `test-results/` when failures occur
 
 Run mode:
@@ -345,7 +345,7 @@ npm run phase8:parse
 
 Output:
 
-- [`reports/results.json`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/results.json)
+- [`reports/results.json`](../reports/results.json)
 
 This file contains:
 
@@ -364,7 +364,7 @@ npm run report:summary
 
 Output:
 
-- [`reports/summary.md`](/Users/administrator/Documents/AI-Assisted QA Engine/reports/summary.md)
+- [`reports/summary.md`](../reports/summary.md)
 
 This report is useful for quick sharing and review.
 

@@ -30,7 +30,7 @@ npm run report:summary
 
 ## Documentation
 
-- Full setup and usage guide: [`docs/USAGE.md`](/Users/administrator/Documents/AI-Assisted QA Engine/docs/USAGE.md)
+- Full setup and usage guide: [`docs/USAGE.md`](docs/USAGE.md)
 
 ## Key Artifacts
 
