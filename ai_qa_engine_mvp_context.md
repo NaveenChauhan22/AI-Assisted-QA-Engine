@@ -30,31 +30,31 @@ This is Phase 1 (MVP). Phase 2 (Release Decision Engine) will be added later.
 
 ## Folder Structure
 
-ai-qa-engine/
-│
-├── input/
-│   └── test-prompt.json
-│
-├── ai/
-│   ├── generateTestCases.ts
-│   ├── generatePlaywrightCode.ts
-│
-├── tests/
-│   └── generated/
-│
-├── runner/
-│   └── runTests.ts
-│
-├── reports/
-│   ├── results.json
-│   └── screenshots/
-│
-├── utils/
-│   └── parser.ts
-│
-├── package.json
-├── tsconfig.json
-└── README.md
+  ai-qa-engine/
+  │
+  ├── input/
+  │   └── test-prompt.json
+  │
+  ├── ai/
+  │   ├── generateTestCases.ts
+  │   ├── generatePlaywrightCode.ts
+  │
+  ├── tests/
+  │   └── generated/
+  │
+  ├── runner/
+  │   └── runTests.ts
+  │
+  ├── reports/
+  │   ├── results.json
+  │   └── screenshots/
+  │
+  ├── utils/
+  │   └── parser.ts
+  │
+  ├── package.json
+  ├── tsconfig.json
+  └── README.md
 
 ---
 
