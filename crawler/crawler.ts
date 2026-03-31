@@ -212,7 +212,11 @@ async function extractLinksWithMode(
         .filter((href): href is string => Boolean(href))
     );
 
-    const uniqueUrls = new Set<string>([normalizeUrl(seed.toString())]);
+    const normalizedSeedUrl = normalizeUrl(seed.toString());
+    const retainedPages = new Map<string, DiscoveredPage>([
+      [normalizedSeedUrl, { url: normalizedSeedUrl, pageType: "homepage" }]
+    ]);
+    const seenUrls = new Set<string>([normalizedSeedUrl]);
 
     for (const href of hrefs) {
       try {
@@ -227,15 +231,28 @@ async function extractLinksWithMode(
         }
 
         const normalizedCandidate = normalizeUrl(candidate.toString());
+        if (seenUrls.has(normalizedCandidate)) {
+          continue;
+        }
+
+        seenUrls.add(normalizedCandidate);
         const normalizedUrl = new URL(normalizedCandidate);
 
         if (shouldExclude(normalizedUrl, excludeKeywords)) {
           continue;
         }
 
-        uniqueUrls.add(normalizedCandidate);
+        const pageType = classifyPage(normalizedCandidate, seed);
+        if (pageType === "unknown") {
+          continue;
+        }
 
-        if (uniqueUrls.size >= maxUrls) {
+        retainedPages.set(normalizedCandidate, {
+          url: normalizedCandidate,
+          pageType
+        });
+
+        if (retainedPages.size >= maxUrls) {
           break;
         }
       } catch {
@@ -243,13 +260,7 @@ async function extractLinksWithMode(
       }
     }
 
-    const pages = Array.from(uniqueUrls).map((url) => ({
-      url,
-      pageType: classifyPage(url, seed)
-    }))
-      .filter((page) => page.pageType !== "unknown" || page.url === normalizeUrl(seed.toString()));
-
-    return sortPages(pages).slice(0, maxUrls);
+    return sortPages(Array.from(retainedPages.values())).slice(0, maxUrls);
   } finally {
     await browser.close();
   }

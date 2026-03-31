@@ -40,6 +40,9 @@ function buildTestRows(tests: ManualTestCase[]): Array<Record<string, string | b
     priority: test.priority,
     steps: formatSteps(test.steps),
     expectedResult: test.expectedResult,
+    assertionType: test.assertion?.type ?? "",
+    assertionSelector: test.assertion?.selector ?? "",
+    assertionText: test.assertion?.text ?? "",
     automationCandidate: test.automationCandidate,
     status: test.status,
     source: test.source
@@ -81,6 +84,92 @@ function populateWorksheet(
   worksheet.views = [{ state: "frozen", ySplit: 1 }];
 }
 
+function applyAssertionTypeValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "assertionType",
+    ['"visible,textVisible,exactText"'],
+    "Invalid Assertion Type",
+    "Select one of: visible, textVisible, exactText."
+  );
+}
+
+function applyStatusValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "status",
+    ['"draft,reviewed,approved"'],
+    "Invalid Status",
+    "Select one of: draft, reviewed, approved."
+  );
+}
+
+function applyCategoryValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "category",
+    ['"smoke,sanity,functional,regression"'],
+    "Invalid Category",
+    "Select one of: smoke, sanity, functional, regression."
+  );
+}
+
+function applyPriorityValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "priority",
+    ['"high,medium,low"'],
+    "Invalid Priority",
+    "Select one of: high, medium, low."
+  );
+}
+
+function applySourceValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "source",
+    ['"template,ai,manual"'],
+    "Invalid Source",
+    "Select one of: template, ai, manual."
+  );
+}
+
+function applyAutomationCandidateValidation(worksheet: ExcelJS.Worksheet): void {
+  applyListValidation(
+    worksheet,
+    "automationCandidate",
+    ['"TRUE,FALSE"'],
+    "Invalid Automation Candidate",
+    "Select either TRUE or FALSE."
+  );
+}
+
+function applyListValidation(
+  worksheet: ExcelJS.Worksheet,
+  columnKey: string,
+  formulae: string[],
+  errorTitle: string,
+  error: string
+): void {
+  const column = worksheet.getColumn(columnKey);
+  const columnLetter = column?.letter;
+
+  if (!column || !columnLetter || worksheet.rowCount < 2) {
+    return;
+  }
+
+  for (let rowIndex = 2; rowIndex <= worksheet.rowCount; rowIndex += 1) {
+    worksheet.getCell(`${columnLetter}${rowIndex}`).dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae,
+      showErrorMessage: true,
+      errorTitle,
+      error
+    };
+  }
+}
+
 async function main(): Promise<void> {
   const suite = await readManualTestSuite();
   await mkdir(path.dirname(manualTestsExcelPath), { recursive: true });
@@ -92,8 +181,14 @@ async function main(): Promise<void> {
   populateWorksheet(
     testsWorksheet,
     buildTestRows(suite.tests),
-    [24, 42, 14, 24, 44, 14, 12, 72, 60, 20, 14, 14]
+    [24, 42, 14, 24, 44, 14, 12, 72, 60, 16, 42, 28, 20, 14, 14]
   );
+  applyAssertionTypeValidation(testsWorksheet);
+  applyStatusValidation(testsWorksheet);
+  applyCategoryValidation(testsWorksheet);
+  applyPriorityValidation(testsWorksheet);
+  applySourceValidation(testsWorksheet);
+  applyAutomationCandidateValidation(testsWorksheet);
   populateWorksheet(
     metadataWorksheet,
     buildMetadataRows(suite),

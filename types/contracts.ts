@@ -31,6 +31,13 @@ export type TestCategory = "smoke" | "sanity" | "functional" | "regression";
 export type TestPriority = "high" | "medium" | "low";
 export type ManualTestStatus = "draft" | "reviewed" | "approved";
 export type ManualTestSource = "ai" | "template" | "manual";
+export type StructuredAssertionType = "visible" | "textVisible" | "exactText";
+
+export interface StructuredAssertion {
+  type: StructuredAssertionType;
+  selector: string;
+  text?: string;
+}
 
 export interface ManualTestCase {
   id: string;
@@ -42,6 +49,7 @@ export interface ManualTestCase {
   priority: TestPriority;
   steps: string[];
   expectedResult: string;
+  assertion?: StructuredAssertion;
   automationCandidate: boolean;
   status: ManualTestStatus;
   source: ManualTestSource;

@@ -1,7 +1,7 @@
 {
   "seedUrl": "https://www.myntra.com/",
   "browserMode": "auto",
-  "maxUrls": 15,
+  "maxUrls": 3,
   "excludePathKeywords": [
     "login",
     "signin",
@@ -16,7 +16,6 @@
     "help",
     "contact",
     "support",
-    "faq",
     "privacy",
     "terms",
     "policy",

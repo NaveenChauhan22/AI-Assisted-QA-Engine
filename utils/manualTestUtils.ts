@@ -1,10 +1,13 @@
 import {
   type ManualTestCase,
   type PageType,
+  type StructuredAssertion,
+  type StructuredAssertionType,
   type TestCategory
 } from "../types/contracts";
 
 type ManualTestInput = Omit<ManualTestCase, "feature"> & { feature?: string };
+const allowedAssertionTypes: StructuredAssertionType[] = ["visible", "textVisible", "exactText"];
 
 function toTitleCase(value: string): string {
   return value
@@ -75,8 +78,11 @@ export function resolveFeature(
 }
 
 export function normalizeManualTest(test: ManualTestInput): ManualTestCase {
+  const assertion = normalizeStructuredAssertion(test.assertion);
+
   return {
     ...test,
+    assertion,
     feature: resolveFeature(test.feature, test.pageType, test.title, test.category)
   };
 }
@@ -86,4 +92,28 @@ export function slugifyLabel(value: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "") || "group";
+}
+
+export function normalizeStructuredAssertion(assertion: StructuredAssertion | undefined): StructuredAssertion | undefined {
+  if (!assertion) {
+    return undefined;
+  }
+
+  const type = allowedAssertionTypes.includes(assertion.type) ? assertion.type : undefined;
+  const selector = String(assertion.selector ?? "").trim();
+  const text = String(assertion.text ?? "").trim();
+
+  if (!type || !selector) {
+    return undefined;
+  }
+
+  if ((type === "textVisible" || type === "exactText") && !text) {
+    return undefined;
+  }
+
+  return {
+    type,
+    selector,
+    ...(text ? { text } : {})
+  };
 }

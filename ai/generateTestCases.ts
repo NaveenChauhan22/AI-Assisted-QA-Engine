@@ -9,6 +9,7 @@ import {
   type ManualTestCase,
   type ManualTestSuite,
   type PageType,
+  type StructuredAssertion,
   type TestCategory,
   type TestPriority
 } from "../types/contracts";
@@ -26,6 +27,7 @@ interface LlmGeneratedTestCase {
   priority: TestPriority;
   steps: string[];
   expectedResult: string;
+  assertion?: StructuredAssertion;
   automationCandidate: boolean;
 }
 
@@ -96,6 +98,11 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
           "Observe the global header and top navigation"
         ],
         expectedResult: "The homepage loads successfully and the primary navigation is visible.",
+        assertion: {
+          type: "exactText",
+          selector: "p.FreeShippingBanner-sidebar-content",
+          text: "UPTO ₹300 OFF"
+        },
         automationCandidate: true
       },
       {
@@ -109,6 +116,10 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
           "Inspect category or promotional entry points"
         ],
         expectedResult: "At least one prominent category or promotional navigation path is visible and clickable.",
+        assertion: {
+          type: "visible",
+          selector: 'a[href*="/shop/"]'
+        },
         automationCandidate: true
       },
       {
@@ -140,6 +151,10 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
           "Inspect the visible product grid or list area"
         ],
         expectedResult: "The category page loads successfully and product listing content is visible.",
+        assertion: {
+          type: "visible",
+          selector: 'a[href*="/buy"]'
+        },
         automationCandidate: true
       },
       {
@@ -153,6 +168,10 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
           "Interact with one available browsing control if present"
         ],
         expectedResult: "Browsing controls are visible and at least one control responds without breaking the page.",
+        assertion: {
+          type: "visible",
+          selector: 'text=/sort/i'
+        },
         automationCandidate: true
       },
       {
@@ -238,10 +257,14 @@ function buildPrompt(page: DiscoveredPage): string {
     "Return ONLY valid JSON.",
     "Return an array with 2 to 4 test case objects.",
     "Each object must contain these keys exactly:",
-    'feature, title, category, priority, steps, expectedResult, automationCandidate',
+    'feature, title, category, priority, steps, expectedResult, assertion, automationCandidate',
     "Feature must be a short grouping label of 2 to 4 words.",
     'Allowed category values: "smoke", "sanity", "functional", "regression".',
     'Allowed priority values: "high", "medium", "low".',
+    'Assertion is optional. When included, it must contain: type, selector, text.',
+    'Allowed assertion type values: "visible", "textVisible", "exactText".',
+    "For visible assertions, include selector and omit text.",
+    "For textVisible and exactText assertions, include selector and text.",
     "Steps must be concise human-readable actions.",
     "Use the page type to make the tests context-aware.",
     "Do not mention the website brand in the output.",
@@ -262,6 +285,7 @@ function normalizeAiTestCase(candidate: LlmGeneratedTestCase): LlmGeneratedTestC
     priority: priorityValues.includes(candidate.priority) ? candidate.priority : "medium",
     steps: Array.isArray(candidate.steps) ? candidate.steps.map((step) => String(step).trim()).filter(Boolean) : [],
     expectedResult: String(candidate.expectedResult ?? "").trim(),
+    assertion: candidate.assertion,
     automationCandidate: Boolean(candidate.automationCandidate)
   };
 }
@@ -346,6 +370,7 @@ function materializeManualTests(page: DiscoveredPage, generatedTests: LlmGenerat
     priority: test.priority,
     steps: test.steps,
     expectedResult: test.expectedResult,
+    assertion: test.assertion,
     automationCandidate: test.automationCandidate,
     status: "draft",
     source

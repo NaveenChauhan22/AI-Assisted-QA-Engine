@@ -44,9 +44,42 @@ function indentBlock(content: string, spaces: number): string {
     .join("\n");
 }
 
+function buildStructuredAssertionLine(test: ManualTestCase): string | null {
+  const assertion = test.assertion;
+
+  if (!assertion) {
+    return null;
+  }
+
+  const selector = JSON.stringify(assertion.selector);
+  const locator = `page.locator(${selector})`;
+
+  if (assertion.type === "visible") {
+    return `await expect(${locator}).toBeVisible();`;
+  }
+
+  if (assertion.type === "textVisible") {
+    return `await expect(${locator}).toContainText(${JSON.stringify(assertion.text ?? "")});`;
+  }
+
+  return `await expect(${locator}).toHaveText(${JSON.stringify(assertion.text ?? "")});`;
+}
+
+function buildMappedStepsComment(test: ManualTestCase): string {
+  if (!test.steps.length) {
+    return "// Mapped Steps: none";
+  }
+
+  return [
+    "// Mapped Steps:",
+    ...test.steps.map((step, index) => `// ${index + 1}. ${step}`)
+  ].join("\n");
+}
+
 function buildTestBody(test: ManualTestCase): string {
   const pageUrl = escapeTemplateString(test.pageUrl);
   const title = escapeTemplateString(toSafeTestTitle(test));
+  const structuredAssertion = buildStructuredAssertionLine(test);
 
   if (test.pageType === "homepage") {
     if (test.id.endsWith("-001")) {
@@ -60,6 +93,7 @@ function buildTestBody(test: ManualTestCase): string {
     '[class*="header"]',
     '[class*="nav"]'
   ]);
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
     }
 
@@ -119,7 +153,7 @@ function buildTestBody(test: ManualTestCase): string {
 
   return `test(${JSON.stringify(title)}, async ({ page }) => {
   await openPage(page, \`${pageUrl}\`);
-  await expect(page.locator("body")).toContainText(/.+/);
+${structuredAssertion ? `  ${structuredAssertion}` : `  await expect(page.locator("body")).toContainText(/.+/);`}
 });`;
 }
 
@@ -128,7 +162,11 @@ function buildTestSection(test: ManualTestCase): string {
     `// Feature: ${test.feature}`,
     `// Page URL: ${test.pageUrl}`,
     `// Test ID: ${test.id}`,
-    `// Category: ${test.category} | Priority: ${test.priority} | Status: ${test.status}`
+    `// Category: ${test.category} | Priority: ${test.priority} | Status: ${test.status}`,
+    buildMappedStepsComment(test),
+    test.assertion
+      ? `// Structured Assertion: ${test.assertion.type} | ${test.assertion.selector}${test.assertion.text ? ` | ${test.assertion.text}` : ""}`
+      : "// Structured Assertion: none"
   ].join("\n");
 
   return `${metadata}

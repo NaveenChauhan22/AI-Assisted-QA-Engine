@@ -9,6 +9,7 @@ CLI-first MVP for AI-assisted website QA using crawling, manual test generation,
 - generate manual test cases into JSON
 - export manual test cases to Excel for human review
 - sync Excel edits back into JSON
+- support optional structured assertion fields in manual tests for deterministic code generation
 - generate Playwright tests for approved manual cases
 - execute automated tests
 - produce JSON and HTML reports
@@ -31,6 +32,12 @@ npm run execute
 ## Documentation
 
 - Full setup and usage guide: [`docs/USAGE.md`](docs/USAGE.md)
+
+## MVP Expectation
+
+- Excel review and structured assertion updates improve the generated automation baseline
+- generated Playwright tests are meant to accelerate automation, not replace test engineering
+- expect to refine selectors, shared page/actions code, and some generated tests for stable long-term automation
 
 ## Key Artifacts
 

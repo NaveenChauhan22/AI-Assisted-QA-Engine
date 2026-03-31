@@ -9,10 +9,11 @@ import {
   type ManualTestSource,
   type ManualTestSuite,
   type PageType,
+  type StructuredAssertionType,
   type TestCategory,
   type TestPriority
 } from "../types/contracts";
-import { normalizeManualTest, resolveFeature } from "./manualTestUtils";
+import { normalizeManualTest, normalizeStructuredAssertion, resolveFeature } from "./manualTestUtils";
 
 const projectRoot = path.resolve(__dirname, "..");
 const manualTestsJsonPath = path.join(projectRoot, "tests", "manual", "manual-testcases.json");
@@ -23,6 +24,7 @@ const allowedCategories: TestCategory[] = ["smoke", "sanity", "functional", "reg
 const allowedPriorities: TestPriority[] = ["high", "medium", "low"];
 const allowedPageTypes: PageType[] = ["homepage", "category", "product", "unknown"];
 const allowedSources: ManualTestSource[] = ["ai", "template", "manual"];
+const allowedAssertionTypes: StructuredAssertionType[] = ["visible", "textVisible", "exactText"];
 
 type RowRecord = Record<string, string>;
 
@@ -124,6 +126,30 @@ function normalizeEnumValue<T extends string>(value: string, allowed: T[], fallb
   return allowed.includes(normalized) ? normalized : fallback;
 }
 
+function assertionFromRecord(record: RowRecord, existing?: ManualTestCase["assertion"]): ManualTestCase["assertion"] {
+  const hasAssertionColumns = ["assertionType", "assertionSelector", "assertionText"].some((field) => field in record);
+
+  if (!hasAssertionColumns) {
+    return existing;
+  }
+
+  const typeValue = record.assertionType?.trim() ?? "";
+  const selectorValue = record.assertionSelector?.trim() ?? "";
+  const textValue = record.assertionText?.trim() ?? "";
+
+  if (!typeValue && !selectorValue && !textValue) {
+    return undefined;
+  }
+
+  const assertionType = normalizeEnumValue(typeValue, allowedAssertionTypes, "visible");
+
+  return normalizeStructuredAssertion({
+    type: assertionType,
+    selector: selectorValue,
+    text: textValue
+  });
+}
+
 function mergeRowIntoTest(record: RowRecord, existing: ManualTestCase): ManualTestCase {
   return normalizeManualTest({
     id: record.id?.trim() || existing.id,
@@ -135,6 +161,7 @@ function mergeRowIntoTest(record: RowRecord, existing: ManualTestCase): ManualTe
     priority: normalizeEnumValue(record.priority ?? "", allowedPriorities, existing.priority),
     steps: record.steps ? parseSteps(record.steps) : existing.steps,
     expectedResult: record.expectedResult?.trim() || existing.expectedResult,
+    assertion: assertionFromRecord(record, existing.assertion),
     automationCandidate: normalizeBoolean(record.automationCandidate ?? "", existing.automationCandidate),
     status: normalizeEnumValue(record.status ?? "", allowedStatuses, existing.status),
     source: normalizeEnumValue(record.source ?? "", allowedSources, existing.source)
@@ -165,6 +192,7 @@ function createManualTestFromRow(record: RowRecord): ManualTestCase {
     priority: normalizeEnumValue(record.priority ?? "", allowedPriorities, "medium"),
     steps,
     expectedResult,
+    assertion: assertionFromRecord(record),
     automationCandidate: normalizeBoolean(record.automationCandidate ?? "", true),
     status: normalizeEnumValue(record.status ?? "", allowedStatuses, "draft"),
     source: normalizeEnumValue(record.source ?? "", allowedSources, "manual")

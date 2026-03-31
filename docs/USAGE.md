@@ -200,6 +200,15 @@ Output:
 
 This workbook is the human review layer.
 
+Dropdown validations are provided for controlled fields such as:
+
+- `assertionType`
+- `category`
+- `priority`
+- `automationCandidate`
+- `status`
+- `source`
+
 ## 9. Review and Edit Manual Test Cases in Excel
 
 Open [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx) in Excel or another spreadsheet tool.
@@ -209,6 +218,7 @@ Users can:
 - update `feature` values to regroup automation output
 - update test titles
 - change categories and priorities
+- add or edit structured assertion fields for deterministic automation checks
 - change `status`
 - delete rows
 - add new rows manually
@@ -229,6 +239,12 @@ Recommended use:
 
 - keep `reviewed` for validated manual tests
 - use `approved` only for tests you want automated
+
+Important expectation:
+
+- Excel updates can improve the generated automation significantly, especially through structured assertion fields
+- generated automated tests are still an MVP baseline and may need selector or support-layer refinement before they become fully robust
+- treat the generated specs, action helpers, and page objects as starting points for stable long-term automation
 
 Field meanings in the workbook:
 
@@ -267,6 +283,18 @@ Field meanings in the workbook:
 
 - `expectedResult`
   The expected behavior of the test case.
+
+- `assertionType`
+  Optional machine-friendly assertion behavior for code generation.
+  Current values:
+  `visible`, `textVisible`, `exactText`
+
+- `assertionSelector`
+  Optional Playwright-compatible selector used when a structured assertion is provided.
+
+- `assertionText`
+  Optional expected text used with `textVisible` or `exactText`.
+  Leave blank for `visible`.
 
 - `automationCandidate`
   Boolean flag that tells the framework whether the case should be considered for automation.
@@ -310,6 +338,8 @@ Sync behavior:
 - if a workbook row matches an existing `id`, that JSON test case is updated
 - if a workbook row is removed, that test case is removed from the JSON suite on sync
 - if a brand-new row is added with a new valid `id`, it is added to the JSON suite
+- if assertion columns are populated, the sync updates the structured assertion block in JSON
+- if assertion columns are cleared, the structured assertion is removed from JSON
 
 ## 11. Generate Automated Playwright Tests
 
@@ -331,6 +361,7 @@ Generated spec behavior:
 - each spec groups tests that share the same feature label
 - tests inside a feature spec can still cover multiple page URLs
 - each generated test section includes a clear comment header with feature, page URL, and manual test ID
+- when a test has a structured assertion, code generation emits that exact assertion in Playwright
 - this keeps specs readable while giving reviewers control over how automation is grouped
 
 Current automation architecture:

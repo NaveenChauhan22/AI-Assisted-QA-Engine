@@ -27,14 +27,54 @@ export class CategoryPage {
       'text=/breadcrumb/i',
       '[class*="sort"]',
       '[class*="filter"]',
-      'select'
+      'select',
+      'picture [srcset*="assets"]'
     ]);
   }
 
   async openFirstProductDetail(): Promise<void> {
     const productLink = await this.firstProductDetailLink();
-    const href = await productLink.getAttribute("href");
-    expect(href, "Expected a product detail href on the category page").toBeTruthy();
+    await this.openProductDetailFromLink(productLink);
+  }
+
+  async openFirstProductDetailCustom(selector: string): Promise<void> {
+    const productLink = await this.firstVisibleLinkForSelector(selector);
+    if (!productLink) {
+      throw new Error(`Could not find a visible product-detail link for selector "${selector}" on ${this.url}`);
+    }
+
+    await this.openProductDetailFromLink(productLink);
+  }
+
+  private async firstProductDetailLink(): Promise<Locator> {
+    for (const selector of this.productDetailLinkSelectors()) {
+      const locator = await this.firstVisibleLinkForSelector(selector);
+      if (locator) {
+        return locator;
+      }
+    }
+
+    throw new Error(`Could not find a visible product-detail link on ${this.url}`);
+  }
+
+  private async firstVisibleLinkForSelector(selector: string): Promise<Locator | null> {
+    const candidates = this.page.locator(selector);
+    const count = await candidates.count();
+
+    for (let index = 0; index < count; index += 1) {
+      const locator = candidates.nth(index);
+      await locator.scrollIntoViewIfNeeded().catch(() => undefined);
+      if (await locator.isVisible().catch(() => false)) {
+        return locator;
+      }
+    }
+
+    return null;
+  }
+
+  private async openProductDetailFromLink(productLink: Locator): Promise<void> {
+    const candidateUrl = await this.resolveNavigableUrl(productLink);
+    expect(candidateUrl, "Expected a product detail href or src on the category page").toBeTruthy();
 
     const popupPromise = this.page.waitForEvent("popup", { timeout: 15_000 }).catch(() => null);
     const sameTabPromise = this.page
@@ -60,18 +100,21 @@ export class CategoryPage {
     await expect(navigatedPage!).not.toHaveURL(this.url);
   }
 
-  private async firstProductDetailLink(): Promise<Locator> {
-    for (const selector of this.productDetailLinkSelectors()) {
-      const locator = this.page.locator(selector).first();
-      if (await locator.count()) {
-        await locator.scrollIntoViewIfNeeded().catch(() => undefined);
-        if (await locator.isVisible().catch(() => false)) {
-          return locator;
-        }
-      }
+  private async resolveNavigableUrl(locator: Locator): Promise<string | null> {
+    const href = await locator.getAttribute("href").catch(() => null);
+    if (href) {
+      return href;
     }
 
-    throw new Error(`Could not find a visible product-detail link on ${this.url}`);
+    const src = await locator.getAttribute("src").catch(() => null);
+    if (src) {
+      return src;
+    }
+
+    return locator.evaluate((element) => {
+      const closestLink = element.closest("a");
+      return closestLink?.getAttribute("href") ?? null;
+    }).catch(() => null);
   }
 
   private productListingSelectors(): string[] {
@@ -79,7 +122,8 @@ export class CategoryPage {
       'a[href*="/buy"]',
       'a[href*="/p/"]',
       '[class*="product"]',
-      '[class*="item"]'
+      '[class*="item"]',
+      'a[href*="https"]:has(img)'
     ];
   }
 
@@ -88,7 +132,8 @@ export class CategoryPage {
       'main a[href*="/buy"]:has(img)',
       'main a[href*="/buy"]',
       'a[href*="/buy"]:has(img)',
-      'a[href*="/buy"]'
+      'a[href*="/buy"]',
+      'a[href*="https"]:has(img)'
     ];
   }
 }
