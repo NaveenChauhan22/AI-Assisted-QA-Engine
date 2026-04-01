@@ -39,7 +39,7 @@ npm run execute
 - runs on pushes to `main`, pull requests to `main`, and manual dispatch
 - installs dependencies and Playwright Chromium
 - runs `npm run typecheck`
-- runs `npm run execute` in headless mode
+- runs `npm run execute` in headed mode under `xvfb-run`
 - uploads `reports/` and `test-results/` as workflow artifacts
 
 ## Execution Options

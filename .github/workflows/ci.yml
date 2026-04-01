@@ -39,8 +39,8 @@ jobs:
       - name: Run automated suite
         env:
           CI: true
-          PLAYWRIGHT_RUN_MODE: headless
-        run: npm run execute
+          PLAYWRIGHT_RUN_MODE: headed
+        run: xvfb-run --auto-servernum npm run execute
 
       - name: Upload reports and test artifacts
         if: always()
