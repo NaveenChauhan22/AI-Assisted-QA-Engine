@@ -390,6 +390,27 @@ Run mode:
 - default runner behavior uses headed execution
 - this is intentional for sites where headless navigation is less reliable
 
+Execution options:
+
+- default browser coverage is Chromium only
+- default worker count is `1`
+- set `PLAYWRIGHT_BROWSERS` to a comma-separated list of:
+  `chromium`, `firefox`, `webkit`
+- set `PLAYWRIGHT_WORKERS` to a positive integer for parallel execution
+
+Examples:
+
+```bash
+PLAYWRIGHT_WORKERS=2 npm run execute
+PLAYWRIGHT_BROWSERS=chromium,firefox npm run execute
+PLAYWRIGHT_BROWSERS=chromium,firefox,webkit PLAYWRIGHT_WORKERS=2 npm run execute
+```
+
+Recommendation:
+
+- keep the default single-browser, single-worker mode for predictable MVP debugging
+- opt into multiple browsers or parallel workers only when you want broader coverage or faster execution
+
 ## 13. Utility: Parse Results Manually
 
 Command:

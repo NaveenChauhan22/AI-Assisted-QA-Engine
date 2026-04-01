@@ -33,6 +33,29 @@ npm run execute
 
 - Full setup and usage guide: [`docs/USAGE.md`](docs/USAGE.md)
 
+## CI
+
+- GitHub Actions workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+- runs on pushes to `main`, pull requests to `main`, and manual dispatch
+- installs dependencies and Playwright Chromium
+- runs `npm run typecheck`
+- runs `npm run execute` in headless mode
+- uploads `reports/` and `test-results/` as workflow artifacts
+
+## Execution Options
+
+- default execution uses Chromium with `1` worker
+- set `PLAYWRIGHT_WORKERS` to opt into parallel execution
+- set `PLAYWRIGHT_BROWSERS` to a comma-separated list such as `chromium,firefox,webkit` for cross-browser runs
+
+Examples:
+
+```bash
+PLAYWRIGHT_WORKERS=2 npm run execute
+PLAYWRIGHT_BROWSERS=chromium,firefox,webkit npm run execute
+PLAYWRIGHT_BROWSERS=chromium,firefox PLAYWRIGHT_WORKERS=2 npm run execute
+```
+
 ## MVP Expectation
 
 - Excel review and structured assertion updates improve the generated automation baseline
