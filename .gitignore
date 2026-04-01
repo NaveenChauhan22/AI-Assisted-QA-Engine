@@ -6,4 +6,3 @@ test-results/
 reports/playwright-raw.json
 reports/results.json
 reports/testcases.json
-tests/automated/**/*.spec.ts
