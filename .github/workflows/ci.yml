@@ -13,9 +13,9 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -30,24 +30,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
-
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Run automated suite
-        env:
-          CI: true
-          PLAYWRIGHT_RUN_MODE: headed
-        run: xvfb-run --auto-servernum npm run execute
+      - name: Build
+        run: npm run build
 
-      - name: Upload reports and test artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: qa-engine-artifacts
-          path: |
-            reports/
-            test-results/
-          if-no-files-found: ignore
+      - name: Verify committed generated specs exist
+        run: |
+          test -f tests/automated/specs/homepage-navigation.spec.ts
+          test -f tests/automated/specs/homepage-discovery.spec.ts
+          test -f tests/automated/specs/category-listing.spec.ts
+          test -f tests/automated/specs/category-discovery.spec.ts
+          test -f tests/automated/specs/product-detail-navigation.spec.ts

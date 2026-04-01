@@ -37,10 +37,10 @@ npm run execute
 
 - GitHub Actions workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 - runs on pushes to `main`, pull requests to `main`, and manual dispatch
-- installs dependencies and Playwright Chromium
 - runs `npm run typecheck`
-- runs `npm run execute` in headed mode under `xvfb-run`
-- uploads `reports/` and `test-results/` as workflow artifacts
+- runs `npm run build`
+- verifies that committed generated specs exist under `tests/automated/specs/`
+- does not run live Myntra execution on GitHub-hosted runners because the target site serves an error page in that environment
 
 ## Execution Options
 
