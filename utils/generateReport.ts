@@ -25,6 +25,14 @@ function buildHtmlSummary(results: ParsedResults): string {
   const passRate = results.total === 0 ? 0 : Math.round((results.passed / results.total) * 100);
   const decisionColor = results.releaseDecision === "GO" ? "#1f7a1f" : "#9f1d1d";
   const decisionBg = results.releaseDecision === "GO" ? "#e9f8ea" : "#fdecec";
+  const executionStatusLabel = results.executionStatus === "completed" ? "Completed" : "No Tests Found";
+  const metadataItems = [
+    results.generatedAt ? `Generated: ${results.generatedAt}` : undefined,
+    results.runMode ? `Run Mode: ${results.runMode}` : undefined,
+    results.browsers && results.browsers.length > 0 ? `Browsers: ${results.browsers.join(", ")}` : undefined,
+    typeof results.workers === "number" ? `Workers: ${results.workers}` : undefined,
+    `Execution Status: ${executionStatusLabel}`
+  ].filter(Boolean);
   const failureItems = results.failures.length === 0
     ? `<p class="empty">No failures were detected.</p>`
     : `<ul class="failures">${results.failures.map((failure) => `
@@ -132,6 +140,20 @@ function buildHtmlSummary(results: ParsedResults): string {
     .empty {
       color: var(--muted);
     }
+    .run-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f4efe4;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -140,6 +162,7 @@ function buildHtmlSummary(results: ParsedResults): string {
       <div class="decision">Release Decision: ${escapeHtml(results.releaseDecision)}</div>
       <h1>Execution Summary</h1>
       <p>${escapeHtml(results.releaseDecisionReason)}</p>
+      <div class="run-meta">${metadataItems.map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("")}</div>
       <div class="stats">
         <div class="stat"><div class="label">Total Tests</div><div class="value">${results.total}</div></div>
         <div class="stat"><div class="label">Passed</div><div class="value">${results.passed}</div></div>

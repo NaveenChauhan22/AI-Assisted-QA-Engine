@@ -73,6 +73,11 @@ export interface PlaywrightExecutionFailure {
 }
 
 export interface ParsedResults {
+  generatedAt: string;
+  executionStatus: "completed" | "no-tests-found";
+  runMode?: "headless" | "headed";
+  browsers?: string[];
+  workers?: number;
   total: number;
   passed: number;
   failed: number;

@@ -39,6 +39,7 @@ Important debugging rule:
 - generated spec files live under `tests/automated/specs/`
 - ignore `dist/` when debugging or maintaining Playwright tests because it is compiled build output
 - `npm run build` intentionally excludes Playwright test sources, so `dist/tests/` should not be part of the workflow
+- once reviewed and committed, `tests/automated/specs/` becomes the execution and CI source of truth
 
 ## 3. Reset the Framework
 
@@ -245,6 +246,7 @@ Important expectation:
 - Excel updates can improve the generated automation significantly, especially through structured assertion fields
 - generated automated tests are still an MVP baseline and may need selector or support-layer refinement before they become fully robust
 - treat the generated specs, action helpers, and page objects as starting points for stable long-term automation
+- after local refinement, commit the resulting spec changes so CI and teammates run the same reviewed automation
 
 Field meanings in the workbook:
 
@@ -384,6 +386,14 @@ What it does:
 - automatically refreshes [`reports/results.json`](../reports/results.json)
 - automatically refreshes [`reports/summary.html`](../reports/summary.html)
 - writes traces/screenshots under `test-results/` when failures occur
+
+Execution results:
+
+- [`reports/results.json`](../reports/results.json) includes execution metadata such as:
+  `generatedAt`, `runMode`, `browsers`, and `workers`
+- if no automated tests are executed, the parser marks the run as:
+  `executionStatus: "no-tests-found"`
+- empty runs are treated as a non-successful release signal so they do not look like healthy passing executions
 
 Run mode:
 

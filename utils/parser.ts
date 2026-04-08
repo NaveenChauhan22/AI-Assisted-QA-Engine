@@ -55,6 +55,8 @@ interface PlaywrightJsonReport {
   suites?: PlaywrightJsonSuite[];
 }
 
+type RunMode = "headless" | "headed";
+
 async function readRawReport(): Promise<PlaywrightJsonReport> {
   const content = await readFile(rawResultsPath, "utf-8");
   return JSON.parse(content) as PlaywrightJsonReport;
@@ -109,6 +111,26 @@ function normalizeFailureFile(file: string | undefined): string | undefined {
   return file.startsWith(projectRoot) ? path.relative(projectRoot, file) : file;
 }
 
+function readRunMode(): RunMode | undefined {
+  return process.env.PARSER_RUN_MODE === "headless" || process.env.PARSER_RUN_MODE === "headed"
+    ? process.env.PARSER_RUN_MODE
+    : undefined;
+}
+
+function readBrowsers(): string[] | undefined {
+  const browsers = (process.env.PARSER_BROWSERS ?? "")
+    .split(",")
+    .map((browser) => browser.trim())
+    .filter(Boolean);
+
+  return browsers.length > 0 ? browsers : undefined;
+}
+
+function readWorkers(): number | undefined {
+  const parsed = Number.parseInt(process.env.PARSER_WORKERS ?? "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
+}
+
 function parseResults(report: PlaywrightJsonReport, manualSuite: ManualTestSuite): ParsedResults {
   const specs = flattenSpecs(report.suites);
   const failures: PlaywrightExecutionFailure[] = [];
@@ -158,13 +180,22 @@ function parseResults(report: PlaywrightJsonReport, manualSuite: ManualTestSuite
     });
   }
 
-  const releaseDecision = highPriorityFailed > 0 ? "NO-GO" : "GO";
-  const releaseDecisionReason = highPriorityFailed > 0
-    ? `${highPriorityFailed} high-priority test${highPriorityFailed === 1 ? "" : "s"} failed.`
-    : "No high-priority failures were detected.";
+  const total = passed + failed;
+  const executionStatus = total === 0 ? "no-tests-found" : "completed";
+  const releaseDecision = total === 0 || highPriorityFailed > 0 ? "NO-GO" : "GO";
+  const releaseDecisionReason = total === 0
+    ? "No automated tests were executed. Verify committed specs, filters, and target-site access before trusting this run."
+    : highPriorityFailed > 0
+      ? `${highPriorityFailed} high-priority test${highPriorityFailed === 1 ? "" : "s"} failed.`
+      : "No high-priority failures were detected.";
 
   return {
-    total: passed + failed,
+    generatedAt: new Date().toISOString(),
+    executionStatus,
+    runMode: readRunMode(),
+    browsers: readBrowsers(),
+    workers: readWorkers(),
+    total,
     passed,
     failed,
     highPriorityTotal,
@@ -184,6 +215,8 @@ async function main(): Promise<void> {
   await writeFile(parsedResultsPath, `${JSON.stringify(parsedResults, null, 2)}\n`, "utf-8");
 
   console.log(JSON.stringify({
+    generatedAt: parsedResults.generatedAt,
+    executionStatus: parsedResults.executionStatus,
     total: parsedResults.total,
     passed: parsedResults.passed,
     failed: parsedResults.failed,

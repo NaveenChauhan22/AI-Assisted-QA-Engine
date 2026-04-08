@@ -13,6 +13,7 @@ CLI-first MVP for AI-assisted website QA using crawling, manual test generation,
 - generate Playwright tests for approved manual cases
 - execute automated tests
 - produce JSON and HTML reports
+- record run metadata such as timestamp, run mode, browser list, and worker count in execution results
 - keep automation maintenance focused on `tests/automated`, not `dist/`
 - use a human-editable `feature` field to group generated specs
 
@@ -41,6 +42,7 @@ npm run execute
 - runs `npm run build`
 - verifies that committed generated specs exist under `tests/automated/specs/`
 - does not run live Myntra execution on GitHub-hosted runners because the target site serves an error page in that environment
+- validates the committed automation artifacts, not local code generation or live-site behavior
 
 ## Execution Options
 
@@ -61,6 +63,7 @@ PLAYWRIGHT_BROWSERS=chromium,firefox PLAYWRIGHT_WORKERS=2 npm run execute
 - Excel review and structured assertion updates improve the generated automation baseline
 - generated Playwright tests are meant to accelerate automation, not replace test engineering
 - expect to refine selectors, shared page/actions code, and some generated tests for stable long-term automation
+- after local review and fixes, committed specs under `tests/automated/specs/` are the execution source of truth
 
 ## Key Artifacts
 
@@ -89,3 +92,4 @@ reports/summary.html
 - ignore `dist/` during automation maintenance because it is build output only
 - `npm run build` intentionally does not emit Playwright test sources into `dist/`
 - `npm run execute` now executes tests and refreshes both `reports/results.json` and `reports/summary.html`
+- `reports/results.json` will explicitly mark `no-tests-found` runs so empty or blocked executions do not look like healthy releases
