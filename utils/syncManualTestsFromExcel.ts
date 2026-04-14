@@ -24,7 +24,14 @@ const allowedCategories: TestCategory[] = ["smoke", "sanity", "functional", "reg
 const allowedPriorities: TestPriority[] = ["high", "medium", "low"];
 const allowedPageTypes: PageType[] = ["homepage", "category", "product", "unknown"];
 const allowedSources: ManualTestSource[] = ["ai", "template", "manual"];
-const allowedAssertionTypes: StructuredAssertionType[] = ["visible", "textVisible", "exactText"];
+const allowedAssertionTypes: StructuredAssertionType[] = [
+  "visible",
+  "textVisible",
+  "exactText",
+  "urlContains",
+  "countAtLeast",
+  "enabled"
+];
 
 type RowRecord = Record<string, string>;
 
@@ -127,7 +134,9 @@ function normalizeEnumValue<T extends string>(value: string, allowed: T[], fallb
 }
 
 function assertionFromRecord(record: RowRecord, existing?: ManualTestCase["assertion"]): ManualTestCase["assertion"] {
-  const hasAssertionColumns = ["assertionType", "assertionSelector", "assertionText"].some((field) => field in record);
+  const hasAssertionColumns = ["assertionType", "assertionSelector", "assertionText", "assertionValue"].some(
+    (field) => field in record
+  );
 
   if (!hasAssertionColumns) {
     return existing;
@@ -136,8 +145,9 @@ function assertionFromRecord(record: RowRecord, existing?: ManualTestCase["asser
   const typeValue = record.assertionType?.trim() ?? "";
   const selectorValue = record.assertionSelector?.trim() ?? "";
   const textValue = record.assertionText?.trim() ?? "";
+  const valueText = record.assertionValue?.trim() ?? "";
 
-  if (!typeValue && !selectorValue && !textValue) {
+  if (!typeValue && !selectorValue && !textValue && !valueText) {
     return undefined;
   }
 
@@ -146,7 +156,8 @@ function assertionFromRecord(record: RowRecord, existing?: ManualTestCase["asser
   return normalizeStructuredAssertion({
     type: assertionType,
     selector: selectorValue,
-    text: textValue
+    text: textValue,
+    value: valueText === "" ? undefined : Number(valueText)
   });
 }
 

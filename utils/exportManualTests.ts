@@ -29,7 +29,7 @@ function formatSteps(steps: string[]): string {
   return steps.map((step, index) => `${index + 1}. ${step}`).join("\n");
 }
 
-function buildTestRows(tests: ManualTestCase[]): Array<Record<string, string | boolean>> {
+function buildTestRows(tests: ManualTestCase[]): Array<Record<string, string | boolean | number>> {
   return tests.map((test) => ({
     id: test.id,
     pageUrl: test.pageUrl,
@@ -43,6 +43,7 @@ function buildTestRows(tests: ManualTestCase[]): Array<Record<string, string | b
     assertionType: test.assertion?.type ?? "",
     assertionSelector: test.assertion?.selector ?? "",
     assertionText: test.assertion?.text ?? "",
+    assertionValue: test.assertion?.value ?? "",
     automationCandidate: test.automationCandidate,
     status: test.status,
     source: test.source
@@ -88,9 +89,9 @@ function applyAssertionTypeValidation(worksheet: ExcelJS.Worksheet): void {
   applyListValidation(
     worksheet,
     "assertionType",
-    ['"visible,textVisible,exactText"'],
+    ['"visible,textVisible,exactText,urlContains,countAtLeast,enabled"'],
     "Invalid Assertion Type",
-    "Select one of: visible, textVisible, exactText."
+    "Select one of: visible, textVisible, exactText, urlContains, countAtLeast, enabled."
   );
 }
 
@@ -181,7 +182,7 @@ async function main(): Promise<void> {
   populateWorksheet(
     testsWorksheet,
     buildTestRows(suite.tests),
-    [24, 42, 14, 24, 44, 14, 12, 72, 60, 16, 42, 28, 20, 14, 14]
+    [24, 42, 14, 24, 44, 14, 12, 72, 60, 16, 42, 28, 14, 20, 14, 14]
   );
   applyAssertionTypeValidation(testsWorksheet);
   applyStatusValidation(testsWorksheet);

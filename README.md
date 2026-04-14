@@ -17,6 +17,14 @@ The MVP takes a target website through a practical workflow:
 
 The goal is not to replace QA engineering. The goal is to accelerate the path from product discovery to reviewable tests and executable automation while keeping humans in control.
 
+## Current Public Focus
+
+The first public iteration is being improved in small, reviewable phases. The current focus is on changes that add value for most QA teams right away:
+
+- broader structured assertions in manual review and code generation
+- less site-specific generated automation
+- docs updated alongside workflow changes
+
 ## Quick Start
 
 ### Prerequisites
@@ -53,6 +61,18 @@ This runs:
 
 - `npm run typecheck`
 - `npm run build`
+
+To run the Playwright suite directly:
+
+```bash
+npm test
+```
+
+If headless browser launch is restricted in your local environment, use:
+
+```bash
+npm run test:headed
+```
 
 ### Optional AI-backed Generation
 
@@ -91,6 +111,7 @@ Key design choices:
 - reviewed and committed specs under `tests/automated/specs/` become the execution source of truth
 - execution results are produced in both machine-readable and presentation-friendly formats
 - empty runs are explicitly marked as `no-tests-found` so they do not look like healthy passing executions
+- structured assertions now support visibility, text, URL, count, and enabled-state checks
 
 ## Main Workflow
 
@@ -112,6 +133,15 @@ Key design choices:
 - categories
 - review status
 - structured assertions
+
+Structured assertion options include:
+
+- `visible`
+- `textVisible`
+- `exactText`
+- `urlContains`
+- `countAtLeast`
+- `enabled`
 
 ### 4. Sync Reviewed Edits
 
@@ -164,6 +194,11 @@ PLAYWRIGHT_BROWSERS=chromium,firefox npm run execute
 PLAYWRIGHT_BROWSERS=chromium,firefox,webkit PLAYWRIGHT_WORKERS=2 npm run execute
 ```
 
+Local note:
+
+- some sandboxed or restricted environments may block headless Chromium launch
+- if `npm test` fails at browser launch, retry with `npm run test:headed`
+
 ## CI
 
 The GitHub Actions workflow:
@@ -199,6 +234,12 @@ Near-term improvements that would make this stronger:
 - sample screenshots or visual workflow assets for public documentation
 - broader CI validation strategies for target environments that behave differently under hosted runners
 - better packaging for reusing the workflow against other sites
+
+Planned rollout style:
+
+- small grouped changes for broad QA value first
+- documentation updates shipped with each workflow change
+- larger integrations such as Jira handled as isolated follow-up commits
 
 ## Public Repo Notes
 

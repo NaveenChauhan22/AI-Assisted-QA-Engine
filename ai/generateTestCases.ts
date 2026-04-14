@@ -99,9 +99,8 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
         ],
         expectedResult: "The homepage loads successfully and the primary navigation is visible.",
         assertion: {
-          type: "exactText",
-          selector: "p.FreeShippingBanner-sidebar-content",
-          text: "UPTO ₹300 OFF"
+          type: "visible",
+          selector: "header, nav, [role='navigation']"
         },
         automationCandidate: true
       },
@@ -117,8 +116,9 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
         ],
         expectedResult: "At least one prominent category or promotional navigation path is visible and clickable.",
         assertion: {
-          type: "visible",
-          selector: 'a[href*="/shop/"]'
+          type: "countAtLeast",
+          selector: "a[href]",
+          value: 3
         },
         automationCandidate: true
       },
@@ -133,6 +133,10 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
           "Observe the destination page"
         ],
         expectedResult: "The selected link opens a browseable listing or collection page without errors.",
+        assertion: {
+          type: "urlContains",
+          text: "/"
+        },
         automationCandidate: true
       }
     ];
@@ -152,8 +156,9 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
         ],
         expectedResult: "The category page loads successfully and product listing content is visible.",
         assertion: {
-          type: "visible",
-          selector: 'a[href*="/buy"]'
+          type: "countAtLeast",
+          selector: "a[href], article, li",
+          value: 3
         },
         automationCandidate: true
       },
@@ -170,7 +175,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
         expectedResult: "Browsing controls are visible and at least one control responds without breaking the page.",
         assertion: {
           type: "visible",
-          selector: 'text=/sort/i'
+          selector: 'button, select, [role="button"], nav'
         },
         automationCandidate: true
       },
@@ -253,7 +258,7 @@ function templateTestsForPage(page: DiscoveredPage): LlmGeneratedTestCase[] {
 
 function buildPrompt(page: DiscoveredPage): string {
   return [
-    "Generate manual UI test cases for a single ecommerce webpage.",
+    "Generate manual UI test cases for a single webpage.",
     "Return ONLY valid JSON.",
     "Return an array with 2 to 4 test case objects.",
     "Each object must contain these keys exactly:",
@@ -261,10 +266,11 @@ function buildPrompt(page: DiscoveredPage): string {
     "Feature must be a short grouping label of 2 to 4 words.",
     'Allowed category values: "smoke", "sanity", "functional", "regression".',
     'Allowed priority values: "high", "medium", "low".',
-    'Assertion is optional. When included, it must contain: type, selector, text.',
-    'Allowed assertion type values: "visible", "textVisible", "exactText".',
-    "For visible assertions, include selector and omit text.",
-    "For textVisible and exactText assertions, include selector and text.",
+    'Assertion is optional. When included, it must contain: type, and may include selector, text, value.',
+    'Allowed assertion type values: "visible", "textVisible", "exactText", "urlContains", "countAtLeast", "enabled".',
+    "For visible and enabled assertions, include selector and omit text/value unless needed.",
+    "For textVisible, exactText, and urlContains assertions, include text.",
+    "For countAtLeast assertions, include selector and numeric value.",
     "Steps must be concise human-readable actions.",
     "Use the page type to make the tests context-aware.",
     "Do not mention the website brand in the output.",

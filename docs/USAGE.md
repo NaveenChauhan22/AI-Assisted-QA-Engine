@@ -20,6 +20,19 @@ Optional:
 - add `OPENAI_API_KEY` to `.env` if you want AI-backed manual test generation
 - without that key, the framework uses deterministic template generation
 
+Recommended test commands:
+
+```bash
+npm run verify
+npm test
+```
+
+If your environment blocks headless Chromium launch, use:
+
+```bash
+npm run test:headed
+```
+
 ## 2. Core Files
 
 Input and working files:
@@ -210,6 +223,15 @@ Dropdown validations are provided for controlled fields such as:
 - `status`
 - `source`
 
+Structured assertion fields support a few broad QA-friendly checks:
+
+- `visible`: selector must be visible
+- `textVisible`: selector contains expected text
+- `exactText`: selector matches exact text
+- `urlContains`: current page URL contains the provided text
+- `countAtLeast`: selector count is at least the provided numeric value
+- `enabled`: selector is enabled for interaction
+
 ## 9. Review and Edit Manual Test Cases in Excel
 
 Open [`tests/manual/manual-testcases.xlsx`](../tests/manual/manual-testcases.xlsx) in Excel or another spreadsheet tool.
@@ -247,6 +269,7 @@ Important expectation:
 - generated automated tests are still an MVP baseline and may need selector or support-layer refinement before they become fully robust
 - treat the generated specs, action helpers, and page objects as starting points for stable long-term automation
 - after local refinement, commit the resulting spec changes so CI and teammates run the same reviewed automation
+- generated automation is intentionally kept generic where possible so it can transfer more easily across sites
 
 Field meanings in the workbook:
 
@@ -289,14 +312,18 @@ Field meanings in the workbook:
 - `assertionType`
   Optional machine-friendly assertion behavior for code generation.
   Current values:
-  `visible`, `textVisible`, `exactText`
+  `visible`, `textVisible`, `exactText`, `urlContains`, `countAtLeast`, `enabled`
 
 - `assertionSelector`
   Optional Playwright-compatible selector used when a structured assertion is provided.
+  This can be left blank for `urlContains`.
 
 - `assertionText`
-  Optional expected text used with `textVisible` or `exactText`.
-  Leave blank for `visible`.
+  Optional expected text used with `textVisible`, `exactText`, or `urlContains`.
+  Leave blank for `visible`, `enabled`, or `countAtLeast`.
+
+- `assertionValue`
+  Optional numeric value used by `countAtLeast`.
 
 - `automationCandidate`
   Boolean flag that tells the framework whether the case should be considered for automation.

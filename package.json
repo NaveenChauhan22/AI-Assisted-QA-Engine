@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck && npm run build",
     "test": "playwright test",
+    "test:headed": "PLAYWRIGHT_HEADLESS=false playwright test",
     "crawl": "ts-node crawler/crawler.ts",
     "testcases": "ts-node ai/generateTestCases.ts",
     "export": "ts-node utils/exportManualTests.ts",

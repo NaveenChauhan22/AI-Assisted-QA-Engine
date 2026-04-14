@@ -25,10 +25,13 @@ export class CategoryPage {
       'text=/sort/i',
       'text=/filter/i',
       'text=/breadcrumb/i',
+      '[aria-label*="sort" i]',
+      '[aria-label*="filter" i]',
       '[class*="sort"]',
       '[class*="filter"]',
+      '[role="navigation"]',
       'select',
-      'picture [srcset*="assets"]'
+      'button'
     ]);
   }
 
@@ -119,21 +122,27 @@ export class CategoryPage {
 
   private productListingSelectors(): string[] {
     return [
-      'a[href*="/buy"]',
       'a[href*="/p/"]',
+      'a[href*="/product"]',
+      'a[href*="/products"]',
+      'article',
+      '[data-testid*="product"]',
       '[class*="product"]',
       '[class*="item"]',
-      'a[href*="https"]:has(img)'
+      'main li',
+      'a[href]:has(img)'
     ];
   }
 
   private productDetailLinkSelectors(): string[] {
     return [
-      'main a[href*="/buy"]:has(img)',
-      'main a[href*="/buy"]',
-      'a[href*="/buy"]:has(img)',
-      'a[href*="/buy"]',
-      'a[href*="https"]:has(img)'
+      'main a[href*="/p/"]:has(img)',
+      'main a[href*="/product"]:has(img)',
+      'main a[href*="/products"]:has(img)',
+      'main a:has(img)',
+      'article a[href]',
+      'a[href]:has(img)',
+      'a[href]'
     ];
   }
 }

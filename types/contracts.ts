@@ -31,12 +31,19 @@ export type TestCategory = "smoke" | "sanity" | "functional" | "regression";
 export type TestPriority = "high" | "medium" | "low";
 export type ManualTestStatus = "draft" | "reviewed" | "approved";
 export type ManualTestSource = "ai" | "template" | "manual";
-export type StructuredAssertionType = "visible" | "textVisible" | "exactText";
+export type StructuredAssertionType =
+  | "visible"
+  | "textVisible"
+  | "exactText"
+  | "urlContains"
+  | "countAtLeast"
+  | "enabled";
 
 export interface StructuredAssertion {
   type: StructuredAssertionType;
-  selector: string;
+  selector?: string;
   text?: string;
+  value?: number;
 }
 
 export interface ManualTestCase {

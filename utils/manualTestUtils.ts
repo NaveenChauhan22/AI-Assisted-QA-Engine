@@ -7,7 +7,15 @@ import {
 } from "../types/contracts";
 
 type ManualTestInput = Omit<ManualTestCase, "feature"> & { feature?: string };
-const allowedAssertionTypes: StructuredAssertionType[] = ["visible", "textVisible", "exactText"];
+const allowedAssertionTypes: StructuredAssertionType[] = [
+  "visible",
+  "textVisible",
+  "exactText",
+  "urlContains",
+  "countAtLeast",
+  "enabled"
+];
+const selectorOptionalAssertionTypes: StructuredAssertionType[] = ["urlContains"];
 
 function toTitleCase(value: string): string {
   return value
@@ -102,18 +110,31 @@ export function normalizeStructuredAssertion(assertion: StructuredAssertion | un
   const type = allowedAssertionTypes.includes(assertion.type) ? assertion.type : undefined;
   const selector = String(assertion.selector ?? "").trim();
   const text = String(assertion.text ?? "").trim();
+  const value =
+    assertion.value === undefined || assertion.value === null
+      ? undefined
+      : Number(assertion.value);
 
-  if (!type || !selector) {
+  if (!type) {
     return undefined;
   }
 
-  if ((type === "textVisible" || type === "exactText") && !text) {
+  if (!selectorOptionalAssertionTypes.includes(type) && !selector) {
+    return undefined;
+  }
+
+  if ((type === "textVisible" || type === "exactText" || type === "urlContains") && !text) {
+    return undefined;
+  }
+
+  if (type === "countAtLeast" && (!Number.isFinite(value) || (value ?? 0) < 1)) {
     return undefined;
   }
 
   return {
     type,
-    selector,
-    ...(text ? { text } : {})
+    ...(selector ? { selector } : {}),
+    ...(text ? { text } : {}),
+    ...(value !== undefined ? { value } : {})
   };
 }

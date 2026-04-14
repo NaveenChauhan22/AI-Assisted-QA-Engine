@@ -51,18 +51,36 @@ function buildStructuredAssertionLine(test: ManualTestCase): string | null {
     return null;
   }
 
-  const selector = JSON.stringify(assertion.selector);
-  const locator = `page.locator(${selector})`;
-
   if (assertion.type === "visible") {
+    const locator = `page.locator(${JSON.stringify(assertion.selector ?? "")})`;
     return `await expect(${locator}).toBeVisible();`;
   }
 
   if (assertion.type === "textVisible") {
+    const locator = `page.locator(${JSON.stringify(assertion.selector ?? "")})`;
     return `await expect(${locator}).toContainText(${JSON.stringify(assertion.text ?? "")});`;
   }
 
-  return `await expect(${locator}).toHaveText(${JSON.stringify(assertion.text ?? "")});`;
+  if (assertion.type === "exactText") {
+    const locator = `page.locator(${JSON.stringify(assertion.selector ?? "")})`;
+    return `await expect(${locator}).toHaveText(${JSON.stringify(assertion.text ?? "")});`;
+  }
+
+  if (assertion.type === "enabled") {
+    const locator = `page.locator(${JSON.stringify(assertion.selector ?? "")})`;
+    return `await expect(${locator}).toBeEnabled();`;
+  }
+
+  if (assertion.type === "urlContains") {
+    return `await expect(page).toHaveURL(new RegExp(${JSON.stringify(assertion.text ?? "")}, "i"));`;
+  }
+
+  if (assertion.type === "countAtLeast") {
+    const locator = `page.locator(${JSON.stringify(assertion.selector ?? "")})`;
+    return `expect(await ${locator}.count()).toBeGreaterThanOrEqual(${assertion.value ?? 1});`;
+  }
+
+  return null;
 }
 
 function buildMappedStepsComment(test: ManualTestCase): string {
@@ -80,12 +98,13 @@ function buildTestBody(test: ManualTestCase): string {
   const pageUrl = escapeTemplateString(test.pageUrl);
   const title = escapeTemplateString(toSafeTestTitle(test));
   const structuredAssertion = buildStructuredAssertionLine(test);
+  const pageOrigin = escapeTemplateString(new URL(test.pageUrl).origin);
 
   if (test.pageType === "homepage") {
     if (test.id.endsWith("-001")) {
       return `test(${JSON.stringify(title)}, async ({ page }) => {
   await openPage(page, \`${pageUrl}\`);
-  await expect(page).toHaveURL(/myntra\\.com/);
+  await expect(page).toHaveURL(new RegExp(${JSON.stringify(pageOrigin.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))}, "i"));
   await expectAnyVisible(page, [
     "header",
     "nav",
@@ -101,28 +120,29 @@ ${structuredAssertion ? `  ${structuredAssertion}` : ""}
       return `test(${JSON.stringify(title)}, async ({ page }) => {
   await openPage(page, \`${pageUrl}\`);
   const visibleLinks = await page.locator('a:visible').count();
-  expect(visibleLinks).toBeGreaterThan(5);
+  expect(visibleLinks).toBeGreaterThan(2);
   await expectAnyVisible(page, [
-    'a[href*="/shop/"]',
-    'a[href*="men-"]',
-    'a[href*="women-"]',
-    'a[href*="kids-"]',
+    'main a',
+    'nav a',
+    'header a',
+    '[role="navigation"] a',
     'img'
   ]);
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
     }
 
     return `test(${JSON.stringify(title)}, async ({ page }) => {
   await openPage(page, \`${pageUrl}\`);
   const destination = await clickFirstVisibleLink(page, [
-    'a[href*="/shop/"]',
-    'a[href*="men-"]',
-    'a[href*="women-"]',
+    'main a',
     'nav a',
-    'header a'
+    'header a',
+    'a[href]'
   ]);
   await expect(page).not.toHaveURL(\`${pageUrl}\`);
   expect(destination).not.toBe("");
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
   }
 
@@ -133,6 +153,7 @@ ${structuredAssertion ? `  ${structuredAssertion}` : ""}
   await categoryPage.open();
   const listingCount = await categoryPage.countProductListings();
   expect(listingCount).toBeGreaterThan(0);
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
     }
 
@@ -141,6 +162,7 @@ ${structuredAssertion ? `  ${structuredAssertion}` : ""}
   const categoryPage = new CategoryPage(page, \`${pageUrl}\`);
   await categoryPage.open();
   await categoryPage.expectDiscoveryControls();
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
     }
 
@@ -148,6 +170,7 @@ ${structuredAssertion ? `  ${structuredAssertion}` : ""}
   const categoryPage = new CategoryPage(page, \`${pageUrl}\`);
   await categoryPage.open();
   await categoryPage.openFirstProductDetail();
+${structuredAssertion ? `  ${structuredAssertion}` : ""}
 });`;
   }
 
@@ -165,7 +188,14 @@ function buildTestSection(test: ManualTestCase): string {
     `// Category: ${test.category} | Priority: ${test.priority} | Status: ${test.status}`,
     buildMappedStepsComment(test),
     test.assertion
-      ? `// Structured Assertion: ${test.assertion.type} | ${test.assertion.selector}${test.assertion.text ? ` | ${test.assertion.text}` : ""}`
+      ? `// Structured Assertion: ${[
+          test.assertion.type,
+          test.assertion.selector,
+          test.assertion.text,
+          test.assertion.value
+        ]
+          .filter((value) => value !== undefined && value !== "")
+          .join(" | ")}`
       : "// Structured Assertion: none"
   ].join("\n");
 
